@@ -3,6 +3,7 @@ import { api } from "../api";
 interface Category {
   id: number;
   name: string;
+  description: string;
 }
 
 export const categoryService = api.injectEndpoints({

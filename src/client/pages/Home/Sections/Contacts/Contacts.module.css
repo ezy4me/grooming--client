@@ -10,19 +10,46 @@
 }
 
 .heading {
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 2.5rem;
+  font-weight: 700;
   color: var(--primary-color);
+  margin-bottom: 20px;
 }
 
 .text {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   color: var(--text-light-color);
   margin-bottom: 40px;
+  font-weight: 400;
 }
 
 .contactInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
   font-size: 1.125rem;
   color: var(--primary-color);
-  margin-top: 20px;
+  justify-content: center;
+}
+
+.icon {
+  font-size: 1.5rem;
+  color: var(--accent-color);
+  margin-right: 15px;
+}
+
+.mapContainer {
+  margin-top: 40px;
+}
+
+.map {
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }

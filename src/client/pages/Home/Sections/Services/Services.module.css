@@ -1,6 +1,5 @@
 .services {
-  padding: 60px 20px;
-  background-color: var(--background-light-color);
+  padding: 80px 20px;
 }
 
 .container {
@@ -10,24 +9,66 @@
 }
 
 .heading {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
   color: var(--primary-color);
-}
-
-.text {
-  font-size: 1.125rem;
-  color: var(--text-light-color);
   margin-bottom: 40px;
 }
 
-.servicesList {
-  list-style-type: none;
-  padding: 0;
-  font-size: 1.125rem;
-  color: var(--primary-color);
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  justify-content: center;
 }
 
-.servicesList li {
+.card {
+  background: linear-gradient(
+    135deg,
+    var(--gradient-start),
+    var(--gradient-end)
+  );
+  color: white;
+  padding: 20px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 5px 15px var(--shadow-color);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px var(--shadow-color);
+}
+
+.icon {
+  width: 60px;
+  height: 60px;
+  background-color: var(--secondary-color);
+  color: var(--accent-color);
+  font-size: 1.8rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+  box-shadow: 0 3px 10px var(--shadow-color);
+}
+
+.cardTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
   margin-bottom: 10px;
+}
+
+.cardText {
+  font-size: 1rem;
+  color: white;
+}
+
+.loading,
+.error {
+  font-size: 1.2rem;
+  color: var(--text-light-color);
 }

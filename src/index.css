@@ -15,9 +15,14 @@
   --accent-color: #d81b60; /* Основной розовый */
   --accent-light: #ff80ab; /* Светлый розовый */
   --button-color: #57db5b; /* Мягкий зеленый */
-  --button-text-color: #0d0d0d; /* Темный текст */
+  --button-text-color: #ffffff; /* Белый текст на кнопках */
   --border-color: #cccccc; /* Светлая граница */
   --link-color: #d81b60; /* Цвет ссылок */
+
+  /* Новые цвета */
+  --gradient-start: #d81b60;
+  --gradient-end: #ff80ab;
+  --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
 html,

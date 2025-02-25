@@ -1,6 +1,6 @@
 .gallery {
   padding: 60px 20px;
-  background-color: var(--background-dark-color);
+  background-color: var(--background-color);
 }
 
 .container {
@@ -17,23 +17,60 @@
 
 .text {
   font-size: 1.125rem;
-  color: var(--text-light-color);
+  color: var(--text-color);
   margin-bottom: 40px;
 }
 
-.images {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
+.galleryWrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.imageTrack {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-auto-flow: column;
+  gap: 10px;
+  animation: scrollGallery 20s linear infinite;
+  align-items: center;
+}
+
+.imageItem {
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .image {
-  width: 32%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.image img {
+.layout0 {
+  grid-row: span 2;
+  width: 300px;
+  height: 400px;
+}
+
+.layout1,
+.layout2 {
+  width: 200px;
+  height: 195px;
+}
+
+@keyframes scrollGallery {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.imageTrack::after {
+  content: "";
+  display: block;
   width: 100%;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }

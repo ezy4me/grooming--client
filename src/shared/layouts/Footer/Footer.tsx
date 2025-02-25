@@ -24,7 +24,7 @@ const Footer = () => {
             <FaMapMarkerAlt className={styles.icon} /> ул. Пушистая, 12, Москва
           </p>
           <p>
-            <FaPhone className={styles.icon} /> +7 (900) 123-45-67
+            <FaPhone className={styles.icon} /> +7 (988) 182-80-85
           </p>
         </div>
 
