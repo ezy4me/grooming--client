@@ -1,7 +1,19 @@
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Header.module.css";
+import LoginModal from "../../components/Login/LoginModal";
 
-const Header = () => {
+const Header: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <header className={styles.header}>
       <div className={styles.container}>
@@ -30,8 +42,12 @@ const Header = () => {
             Контакты
           </Link>
         </nav>
-        <button className={styles.button}>Записаться</button>
+        <button className={styles.button} onClick={openModal}>
+          Войти
+        </button>
       </div>
+
+      {isModalOpen && <LoginModal onClose={closeModal} />}
     </header>
   );
 };

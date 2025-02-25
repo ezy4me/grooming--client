@@ -1,3 +1,4 @@
+/* Основные стили */
 .about {
   padding: 60px 20px;
   background-color: var(--background-light-color);
@@ -26,7 +27,7 @@
 
 .info {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
   gap: 40px;
   margin-bottom: 60px;
 }
@@ -91,4 +92,98 @@
   color: var(--text-light-color);
   text-align: center;
   margin-top: 10px;
+}
+
+/* Адаптивность */
+@media (max-width: 1200px) {
+  .info {
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
+    gap: 30px;
+  }
+
+  .imageSection {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .imageContainer {
+    width: 80%;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .heading {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+
+  .info {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .infoItem {
+    padding: 20px;
+  }
+
+  .icon {
+    font-size: 2rem;
+  }
+
+  .infoTitle {
+    font-size: 1.25rem;
+  }
+
+  .infoText {
+    font-size: 1rem;
+  }
+
+  .imageContainer {
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .heading {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.875rem;
+  }
+
+  .info {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .infoItem {
+    padding: 15px;
+  }
+
+  .icon {
+    font-size: 1.8rem;
+  }
+
+  .infoTitle {
+    font-size: 1.125rem;
+  }
+
+  .infoText {
+    font-size: 0.875rem;
+  }
+
+  .imageContainer {
+    width: 95%;
+  }
+
+  .aboutImage {
+    height: 250px;
+    object-fit: cover;
+  }
 }
