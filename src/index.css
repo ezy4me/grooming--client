@@ -2,19 +2,34 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --primary-color: #ff5733; /* Основной акцентный цвет (например, для кнопок) */
-  --secondary-color: #333333; /* Черный для текста и фона */
-  --background-color: #f8f8f8; /* Светлый фон */
-  --text-color: #333333; /* Темный текст */
-  --accent-color: #ffcc00; /* Дополнительный акцент (для ссылок или выделений) */
-  --button-color: #ff5733; /* Цвет кнопок */
-  --button-text-color: #ffffff; /* Текст на кнопках */
-  --border-color: #cccccc; /* Цвет границ */
-  --link-color: #0066cc; /* Цвет ссылок */
+  --primary-color: #0d0d0d; /* Глубокий черный */
+  --secondary-color: #ffffff; /* Чистый белый */
+  --background-color: #f5f5f5; /* Светлый фон */
+  --text-color: #0d0d0d; /* Основной цвет текста */
+  --accent-color: #d81b60; /* Основной розовый */
+  --accent-light: #ff80ab; /* Светлый розовый */
+  --button-color: #57db5b; /* Мягкий зеленый */
+  --button-text-color: #0d0d0d; /* Темный текст */
+  --border-color: #cccccc; /* Светлая граница */
+  --link-color: #d81b60; /* Цвет ссылок */
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+heml {
+  scroll-behavior: smooth;
+}
+
+main {
+  min-height: 100vh;
 }

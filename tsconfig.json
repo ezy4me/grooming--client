@@ -1,19 +1,21 @@
 {
   "files": [],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@admin/*": ["src/admin/*"],
+      "@client/*": ["src/client/*"],
+      "@shared/*": ["src/shared/*"],
+      "@assets/*": ["src/assets/*"],
+      "@router/*": ["src/router/*"],
+      "@store/*": ["src/store/*"],
+      "@types/*": ["src/types/*"],
+      "@services/*": ["src/services/*"]
+    }
+  },
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ],
-  "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "~admin/*": ["src/admin/*"],
-      "~client/*": ["src/client/*"],
-      "~shared/*": ["src/shared/*"],
-      "~assets/*": ["src/assets/*"],
-      "~router/*": ["src/router/*"],
-      "~store/*": ["src/store/*"],
-      "~types/*": ["src/types/*"]
-    }
-  }
+  ]
 }
