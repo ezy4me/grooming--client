@@ -73,7 +73,7 @@ label {
 }
 
 input {
-  padding: 10px 10px 10px 35px; /* пространство для иконки */
+  padding: 10px 10px 10px 35px; 
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -114,4 +114,10 @@ input:focus {
   color: #d81b60;
   cursor: pointer;
   font-weight: bold;
+}
+
+.error {
+  font-size: .75rem;
+  color: #d81b60;
+  margin: 4px 0 0 0;
 }

@@ -1,0 +1,68 @@
+import React from "react";
+import {
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+} from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { FaSignOutAlt } from "react-icons/fa";
+
+interface SidebarProps {
+  links: { text: string; path: string; icon: React.ReactNode }[];
+}
+
+const drawerWidth = 240;
+
+const Sidebar: React.FC<SidebarProps> = ({ links }) => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.clear();
+
+    navigate("/", { replace: true });
+  };
+
+  return (
+    <Drawer
+      variant="permanent"
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        [`& .MuiDrawer-paper`]: {
+          width: drawerWidth,
+          boxSizing: "border-box",
+          backgroundColor: "#fafafa",
+          color: "#121212",
+        },
+      }}>
+      <List sx={{ flexGrow: 1, padding: 0 }}>
+        {links.map(({ text, path, icon }) => (
+          <ListItemButton
+            sx={{ paddingY: 1.5 }}
+            key={path}
+            component={Link}
+            to={path}>
+            <ListItemIcon>{icon}</ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItemButton>
+        ))}
+      </List>
+
+      <Divider />
+
+      <List>
+        <ListItemButton onClick={handleLogout} sx={{ paddingY: 1.5 }}>
+          <ListItemIcon>
+            <FaSignOutAlt color="error" />
+          </ListItemIcon>
+          <ListItemText primary="Выход" />
+        </ListItemButton>
+      </List>
+    </Drawer>
+  );
+};
+
+export default Sidebar;

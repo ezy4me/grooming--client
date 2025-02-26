@@ -1,15 +1,16 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 interface ProtectedRouteProps {
   allowedRoles: string[];
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
-  const userRole = "USER";
+  const user = useSelector((state: any) => state.auth.user);
 
-  if (!allowedRoles.includes(userRole)) {
-    return <Navigate to="/login" replace />;
+  if (!user || !allowedRoles.includes(user.role)) {
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;

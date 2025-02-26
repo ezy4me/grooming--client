@@ -1,16 +1,14 @@
-import React, { ReactNode } from "react";
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
+import { Outlet } from "react-router-dom";
 
-interface AuthLayoutProps {
-  children: ReactNode;
-}
-
-const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
+const AuthLayout = () => {
   return (
     <div>
       <Header />
-      <main>{children}</main>
+      <main>
+        <Outlet />{" "}
+      </main>
       <Footer />
     </div>
   );

@@ -1,12 +1,12 @@
 import { api } from "../api";
 
 interface LoginRequest {
-  username: string;
+  email: string; 
   password: string;
 }
 
 interface LoginResponse {
-  accesToken: string;
+  accesToken: string;  
   refreshToken: {
     token: string;
     exp: string;
@@ -19,7 +19,7 @@ interface LoginResponse {
 }
 
 interface RegisterRequest {
-  username: string;
+  email: string; 
   password: string;
   passwordRepeat: string;
   role: string;
