@@ -5,6 +5,8 @@ import ProtectedRoute from "../shared/components/Route/ProtectedRoute";
 import AuthLayout from "../shared/layouts/AuthLayout";
 import AdminLayout from "../shared/layouts/AdminLayout";
 import EmployeeLayout from "../shared/layouts/EmployeeLayout";
+import CategoriesDashboard from "../admin/pages/CategoriesDashboard";
+import ServicesDashboard from "../admin/pages/ServiceDashboard";
 
 const RouterConfig = () => (
   <Routes>
@@ -18,17 +20,17 @@ const RouterConfig = () => (
       </Route>
     </Route>
 
-    {/* Admin Route */}
     <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<div>Admin Dashboard</div>} />
-        <Route path="dashboard" element={<div>Admin Dashboard Page</div>} />
-        <Route path="users" element={<div>Admin Users Page</div>} />
-        <Route path="settings" element={<div>Admin Settings Page</div>} />
+        <Route path="categories" element={<CategoriesDashboard />} />
+        <Route path="services" element={<ServicesDashboard/>} />
+        <Route path="clients" element={<div>clients</div>} />
+        <Route path="employees" element={<div>employee</div>} />
+        <Route path="appointments" element={<div>appointments</div>} />
       </Route>
     </Route>
 
-    {/* Employee Route */}
     <Route element={<ProtectedRoute allowedRoles={["EMPLOYEE"]} />}>
       <Route path="/employee" element={<EmployeeLayout />}>
         <Route index element={<div>Employee Dashboard</div>} />
@@ -37,7 +39,6 @@ const RouterConfig = () => (
       </Route>
     </Route>
 
-    {/* Fallback route */}
     <Route path="*" element={<Navigate to="/" replace />} />
   </Routes>
 );

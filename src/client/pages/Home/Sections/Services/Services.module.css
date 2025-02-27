@@ -17,8 +17,8 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
   justify-content: center;
 }
 
@@ -29,24 +29,43 @@
     var(--gradient-end)
   );
   color: white;
-  padding: 20px;
-  border-radius: 16px;
+  padding: 25px;
+  border-radius: 20px;
   text-align: center;
-  box-shadow: 0 5px 15px var(--shadow-color);
-  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 6px 18px var(--shadow-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -20%;
+  width: 140%;
+  height: 140%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+  transform: scale(0);
+  transition: transform 0.4s ease-out;
+}
+
+.card:hover::before {
+  transform: scale(1.2);
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px var(--shadow-color);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px var(--shadow-color);
 }
 
 .icon {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   background-color: var(--secondary-color);
   color: var(--accent-color);
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -57,18 +76,103 @@
 }
 
 .cardTitle {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .cardText {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: white;
+  opacity: 0.9;
 }
 
 .loading,
 .error {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: var(--text-light-color);
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 450px;
+  max-width: 90%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modalContent {
+  overflow-y: auto;
+  max-height: 60vh;
+  padding-right: 10px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.modalTitle {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: var(--primary-color);
+  text-align: center;
+}
+
+.serviceList {
+  list-style: none;
+  padding: 0;
+}
+
+.serviceItem {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  h3 {
+    margin: 8px 0;
+  }
+
+  p {
+    margin: 8px 0;
+  }
+}
+
+.servicePrice {
+  font-weight: bold;
+  color: #007bff;
+  font-size: 1.2rem;
+  align-self: flex-end;
+}
+
+.noServices {
+  text-align: center;
+  color: gray;
+  font-size: 1.2rem;
 }
