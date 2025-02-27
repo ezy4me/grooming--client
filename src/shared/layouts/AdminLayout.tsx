@@ -14,7 +14,7 @@ const AdminLayout: React.FC = () => {
   ];
 
   return (
-    <Box sx={{ display: "flex", height: "100vh", backgroundColor: "#f7f7f7" }}>
+    <Box sx={{ display: "flex", height: "100vh", backgroundColor: "#d81b60" }}>
       <Sidebar links={links} />
       <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
         <Box sx={{ flexGrow: 1, p: 2, backgroundColor: "#fefefe", mt: 8 }}>

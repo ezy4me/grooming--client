@@ -7,7 +7,7 @@ import {
   ListItemText,
   Divider,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaSignOutAlt } from "react-icons/fa";
 
 interface SidebarProps {
@@ -18,10 +18,10 @@ const drawerWidth = 240;
 
 const Sidebar: React.FC<SidebarProps> = ({ links }) => {
   const navigate = useNavigate();
+  const location = useLocation(); // Получаем текущий маршрут
 
   const handleLogout = () => {
     localStorage.clear();
-
     navigate("/", { replace: true });
   };
 
@@ -41,10 +41,18 @@ const Sidebar: React.FC<SidebarProps> = ({ links }) => {
       <List sx={{ flexGrow: 1, padding: 0 }}>
         {links.map(({ text, path, icon }) => (
           <ListItemButton
-            sx={{ paddingY: 1.5 }}
             key={path}
             component={Link}
-            to={path}>
+            to={path}
+            sx={{
+              paddingY: 1.5,
+              backgroundColor:
+                location.pathname === path ? "#d1e7ff" : "transparent",
+              "&:hover": {
+                backgroundColor:
+                  location.pathname === path ? "#a6c8ff" : "#f4f4f4",
+              },
+            }}>
             <ListItemIcon>{icon}</ListItemIcon>
             <ListItemText primary={text} />
           </ListItemButton>

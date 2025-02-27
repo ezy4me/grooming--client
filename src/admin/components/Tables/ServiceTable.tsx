@@ -23,7 +23,13 @@ const ServiceTable: React.FC<any> = ({
   const classes = useStyles();
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 90 },
+    {
+      field: "id",
+      headerName: "ID",
+      width: 90,
+      align: "center",
+      headerAlign: "center",
+    },
     { field: "name", headerName: "Название услуги", width: 200 },
     { field: "description", headerName: "Описание", width: 200 },
     { field: "price", headerName: "Цена", width: 150, type: "number" },

@@ -7,6 +7,8 @@ import AdminLayout from "../shared/layouts/AdminLayout";
 import EmployeeLayout from "../shared/layouts/EmployeeLayout";
 import CategoriesDashboard from "../admin/pages/CategoriesDashboard";
 import ServicesDashboard from "../admin/pages/ServiceDashboard";
+import ClientsDashboard from "../admin/pages/ClientsDashboard";
+import EmployeesDashboard from "../admin/pages/EmployeesDashboard";
 
 const RouterConfig = () => (
   <Routes>
@@ -24,9 +26,9 @@ const RouterConfig = () => (
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<div>Admin Dashboard</div>} />
         <Route path="categories" element={<CategoriesDashboard />} />
-        <Route path="services" element={<ServicesDashboard/>} />
-        <Route path="clients" element={<div>clients</div>} />
-        <Route path="employees" element={<div>employee</div>} />
+        <Route path="services" element={<ServicesDashboard />} />
+        <Route path="clients" element={<ClientsDashboard />} />
+        <Route path="employees" element={<EmployeesDashboard/>} />
         <Route path="appointments" element={<div>appointments</div>} />
       </Route>
     </Route>

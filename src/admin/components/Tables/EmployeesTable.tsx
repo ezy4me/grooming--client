@@ -13,8 +13,8 @@ const useStyles = makeStyles({
   },
 });
 
-const CategoryTable: React.FC<any> = ({
-  categories,
+const EmployeesTable: React.FC<any> = ({
+  employees,
   onEdit,
   onDelete,
   isLoading,
@@ -30,8 +30,15 @@ const CategoryTable: React.FC<any> = ({
       align: "center",
       headerAlign: "center",
     },
-    { field: "name", headerName: "Название категории", width: 200 },
-    { field: "description", headerName: "Описание категории", width: 200 },
+    { field: "fullName", headerName: "Имя", width: 200 },
+    { field: "phone", headerName: "Телефон", width: 150 },
+    { field: "birthday", headerName: "День рождения", width: 150 },
+    {
+      field: "user",
+      headerName: "Почта",
+      width: 150,
+      valueGetter: (_, row) => row.user?.email || "-",
+    },
     {
       field: "actions",
       type: "actions",
@@ -55,8 +62,8 @@ const CategoryTable: React.FC<any> = ({
   ];
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         height: 400,
         width: "100%",
         display: "flex",
@@ -72,7 +79,7 @@ const CategoryTable: React.FC<any> = ({
         <Typography color="error">Ошибка при загрузке данных.</Typography>
       ) : (
         <DataGrid
-          rows={categories}
+          rows={employees}
           columns={columns}
           initialState={{
             pagination: {
@@ -90,8 +97,8 @@ const CategoryTable: React.FC<any> = ({
           }
         />
       )}
-    </div>
+    </Box>
   );
 };
 
-export default CategoryTable;
+export default EmployeesTable;
