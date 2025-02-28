@@ -10,6 +10,7 @@ import {
 import CategoriesTable from "../components/Tables/CategoriesTable";
 import CategoryForm from "../components/Forms/CategoryForm";
 import ConfirmDialog from "../../shared/components/ConfirmDialog/ConfirmDialog";
+import Notification from "../../shared/components/Notification/Notification";
 
 const CategoriesDashboard = () => {
   const {
@@ -28,6 +29,12 @@ const CategoriesDashboard = () => {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState<number | null>(null);
 
+  const [notification, setNotification] = useState({
+    open: false,
+    message: "",
+    severity: "success" as "success" | "error",
+  });
+
   const handleOpenCategoryForm = (category: any | null) => {
     setSelectedCategory(category);
     setIsAddingCategory(!category);
@@ -45,16 +52,31 @@ const CategoriesDashboard = () => {
     try {
       if (isAddingCategory) {
         await createCategory(categoryData).unwrap();
+        setNotification({
+          open: true,
+          message: "Категория добавлена",
+          severity: "success",
+        });
       } else if (selectedCategory) {
         await updateCategory({
           id: selectedCategory.id,
           ...categoryData,
         }).unwrap();
+        setNotification({
+          open: true,
+          message: "Категория обновлена",
+          severity: "success",
+        });
       }
       handleCloseCategoryForm();
       refetch();
     } catch (error) {
       console.error("Ошибка сохранения категории:", error);
+      setNotification({
+        open: true,
+        message: "Ошибка сохранения",
+        severity: "error",
+      });
     }
   };
 
@@ -62,9 +84,19 @@ const CategoriesDashboard = () => {
     if (categoryToDelete !== null) {
       try {
         await deleteCategory(categoryToDelete).unwrap();
+        setNotification({
+          open: true,
+          message: "Категория удалена",
+          severity: "success",
+        });
         refetch();
       } catch (error) {
         console.error("Ошибка удаления категории:", error);
+        setNotification({
+          open: true,
+          message: "Ошибка удаления",
+          severity: "error",
+        });
       } finally {
         setConfirmOpen(false);
         setCategoryToDelete(null);
@@ -98,7 +130,7 @@ const CategoriesDashboard = () => {
         </Button>
       </Box>
 
-      <Divider sx={{my: 2}} />
+      <Divider sx={{ my: 2 }} />
 
       <CategoriesTable
         categories={categories}
@@ -114,6 +146,13 @@ const CategoriesDashboard = () => {
         onSave={handleSaveCategory}
         category={selectedCategory}
         isAdding={isAddingCategory}
+      />
+
+      <Notification
+        open={notification.open}
+        message={notification.message}
+        severity={notification.severity}
+        onClose={() => setNotification({ ...notification, open: false })}
       />
 
       <ConfirmDialog

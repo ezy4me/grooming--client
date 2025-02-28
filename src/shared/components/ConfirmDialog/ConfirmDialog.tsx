@@ -38,12 +38,12 @@ const ConfirmDialog = ({
         </Box>
       </DialogContent>
       <DialogActions sx={{ pb: 2, px: 3 }}>
-        <Button onClick={onClose} color="secondary" variant="outlined">
+        <Button onClick={onClose} variant="contained">
           {cancelText}
         </Button>
         <Button
           onClick={onConfirm}
-          color="primary"
+          sx={{ bgcolor: "#ff642f" }}
           variant="contained"
           autoFocus>
           {confirmText}

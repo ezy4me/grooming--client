@@ -6,9 +6,11 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
+  Box,
+  Typography,
 } from "@mui/material";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { FaSignOutAlt } from "react-icons/fa";
+import { FaSignOutAlt, FaPaw } from "react-icons/fa";
 
 interface SidebarProps {
   links: { text: string; path: string; icon: React.ReactNode }[];
@@ -18,7 +20,7 @@ const drawerWidth = 240;
 
 const Sidebar: React.FC<SidebarProps> = ({ links }) => {
   const navigate = useNavigate();
-  const location = useLocation(); // Получаем текущий маршрут
+  const location = useLocation();
 
   const handleLogout = () => {
     localStorage.clear();
@@ -38,6 +40,19 @@ const Sidebar: React.FC<SidebarProps> = ({ links }) => {
           color: "#121212",
         },
       }}>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        bgcolor={"#1ba9d8"}
+        py={2}
+        gap={1}>
+        <FaPaw size={20} color="#000000" />
+        <Typography variant="h6" fontWeight="bold">
+          мягкие лапки
+        </Typography>
+      </Box>
+
       <List sx={{ flexGrow: 1, padding: 0 }}>
         {links.map(({ text, path, icon }) => (
           <ListItemButton
