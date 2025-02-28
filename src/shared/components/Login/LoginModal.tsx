@@ -48,7 +48,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
   const dispatch = useDispatch();
   const [login, { isLoading: isLoggingIn }] = useLoginMutation();
   const [register, { isLoading: isRegistering }] = useRegisterMutation();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -78,20 +78,22 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
         if (response.user.role === "ADMIN") {
           navigate("/admin");
         } else if (response.user.role === "EMPLOYEE") {
-          navigate("/employee"); 
+          navigate("/employee");
+        } else if (response.user.role === "USER") {
+          navigate("/profile");
         }
       } else {
         await register({
           email: data.email,
           password: data.password,
           passwordRepeat: data.passwordRepeat || "",
-          role: "USER", 
+          role: "USER",
         }).unwrap();
 
         setIsLogin(true);
       }
 
-      onClose(); 
+      onClose();
     } catch (error) {
       console.error("Ошибка авторизации:", error);
     }
