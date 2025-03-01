@@ -63,6 +63,7 @@ const EmployeesTable: React.FC<any> = ({
           color="primary"
         />,
         <GridActionsCellItem
+          
           icon={<Delete />}
           label="Удалить"
           onClick={() => onDelete(row.id)}

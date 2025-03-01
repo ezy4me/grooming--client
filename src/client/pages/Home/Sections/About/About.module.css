@@ -1,4 +1,3 @@
-/* Основные стили */
 .about {
   padding: 60px 20px;
   background-color: var(--background-light-color);
@@ -102,7 +101,6 @@
   margin-top: 10px;
 }
 
-/* Адаптивность */
 @media (max-width: 1200px) {
   .info {
     grid-template-columns: repeat(2, minmax(200px, 1fr));

@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
 import { FaUser, FaLock, FaTimes } from "react-icons/fa";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for programmatic navigation
+import { useNavigate } from "react-router-dom"; 
 import styles from "./LoginModal.module.css";
 import {
   useLoginMutation,

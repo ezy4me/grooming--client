@@ -1,6 +1,11 @@
 import React from "react";
 import styles from "./Contacts.module.css";
-import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaClock } from "react-icons/fa"; // Иконки для телефона, почты, адреса и времени работы
+import {
+  FaPhoneAlt,
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaClock,
+} from "react-icons/fa";
 
 const Contacts: React.FC = () => {
   return (
@@ -8,9 +13,7 @@ const Contacts: React.FC = () => {
       <div className={styles.container}>
         <h2 className={styles.heading}>Контакты</h2>
         <div className={styles.divider}></div>
-        <p className={styles.text}>
-          Свяжитесь с нами для записи и вопросов:
-        </p>
+        <p className={styles.text}>Свяжитесь с нами для записи и вопросов:</p>
 
         <div className={styles.contactInfo}>
           <div className={styles.contactItem}>
@@ -38,8 +41,7 @@ const Contacts: React.FC = () => {
             height="400"
             frameBorder="0"
             className={styles.map}
-            title="Яндекс Карта"
-          ></iframe>
+            title="Яндекс Карта"></iframe>
         </div>
       </div>
     </section>

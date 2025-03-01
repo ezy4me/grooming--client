@@ -15,7 +15,7 @@ export const clientService = api.injectEndpoints({
       transformResponse: (response: any[]) =>
         response.map((client) => ({
           ...client,
-          email: client.user?.email || "", // Берем email из вложенного user
+          email: client.user?.email || "", 
         })),
     }),
     getClientById: builder.query<Client, number>({

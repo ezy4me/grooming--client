@@ -58,7 +58,7 @@ const UserForm = ({ open, onClose, isAdding, onSave }: UserFormProps) => {
     passwordRepeat: string;
     role: string;
   }) => {
-    await onSave(data); // вызываем onSave, передавая данные формы
+    await onSave(data); 
   };
 
   return (

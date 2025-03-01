@@ -10,13 +10,13 @@ interface EmployeeFormProps {
   onSave: (employeeData: {
     fullName: string;
     phone: string;
-    birthday: string; // Строка с датой в формате ISO
+    birthday: string; 
     userId: number;
   }) => void;
   employee?: {
     fullName: string;
     phone: string;
-    birthday: string; // Строка с датой в формате ISO
+    birthday: string; 
     userId: number;
   };
   isAdding: boolean;

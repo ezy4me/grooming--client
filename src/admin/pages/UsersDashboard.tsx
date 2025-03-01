@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Typography, Divider, Box, TextField, Button } from "@mui/material";
-import { useGetUsersQuery } from "../../services/userService"; // оставляем только этот запрос
+import { useGetUsersQuery } from "../../services/userService"; 
 import UsersTable from "../components/Tables/UsersTable";
 import UserForm from "../components/Forms/UserForm";
-import { useRegisterMutation } from "../../services/authApi"; // Используем нужный хук для регистрации пользователя
+import { useRegisterMutation } from "../../services/authApi"; 
 
 const UsersDashboard = () => {
   const { data: users = [], isLoading, isError, refetch } = useGetUsersQuery();
-  const [registerUser] = useRegisterMutation(); // Используем регистрацию пользователя
+  const [registerUser] = useRegisterMutation();
   const [searchQuery, setSearchQuery] = useState("");
   const [openUserForm, setOpenUserForm] = useState(false);
   const [isAdding, setIsAdding] = useState(true);
@@ -32,8 +32,8 @@ const UsersDashboard = () => {
     role: string;
   }) => {
     try {
-      await registerUser(newUser).unwrap(); // Регистрация пользователя
-      refetch(); // Обновляем список пользователей
+      await registerUser(newUser).unwrap();
+      refetch();
       handleCloseUserForm();
     } catch (error) {
       console.error("Ошибка при регистрации пользователя:", error);
@@ -69,6 +69,7 @@ const UsersDashboard = () => {
           <Button
             variant="contained"
             color="primary"
+            sx={{bgcolor: "#24dc13"}}
             onClick={handleOpenUserForm}>
             Добавить пользователя
           </Button>
