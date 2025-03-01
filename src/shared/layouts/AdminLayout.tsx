@@ -6,6 +6,7 @@ import { FaHome, FaUserTie, FaClipboardList, FaUsers } from "react-icons/fa";
 
 const AdminLayout: React.FC = () => {
   const links = [
+    { text: "Пользователи", path: "/admin/users", icon: <FaUsers /> },
     {
       text: "Категории услуг",
       path: "/admin/categories",

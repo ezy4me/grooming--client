@@ -9,27 +9,27 @@ interface User {
 export const userService = api.injectEndpoints({
   endpoints: (builder) => ({
     getUsers: builder.query<User[], void>({
-      query: () => "users",
+      query: () => "user",
     }),
     getUserById: builder.query<User, number>({
-      query: (id) => `users/${id}`,
+      query: (id) => `user/${id}`,
     }),
     updateUser: builder.mutation<User, Partial<User> & { id: number }>({
       query: ({ id, ...data }) => ({
-        url: `users/${id}`,
+        url: `user/${id}`,
         method: "PUT",
         body: data,
       }),
     }),
     deleteUser: builder.mutation<{ success: boolean; id: number }, number>({
       query: (id) => ({
-        url: `users/${id}`,
+        url: `user/${id}`,
         method: "DELETE",
       }),
     }),
     createUser: builder.mutation<User, Omit<User, "id">>({
       query: (data) => ({
-        url: `users`,
+        url: `user`,
         method: "POST",
         body: data,
       }),

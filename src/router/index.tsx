@@ -10,6 +10,7 @@ import ServicesDashboard from "../admin/pages/ServiceDashboard";
 import ClientsDashboard from "../admin/pages/ClientsDashboard";
 import EmployeesDashboard from "../admin/pages/EmployeesDashboard";
 import ProfilePage from "../client/pages/Profile/ProfilePage";
+import UsersDashboard from "../admin/pages/UsersDashboard";
 
 const RouterConfig = () => (
   <Routes>
@@ -25,11 +26,11 @@ const RouterConfig = () => (
 
     <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
       <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<div>Admin Dashboard</div>} />
+        <Route index path="users" element={<UsersDashboard />} />
         <Route path="categories" element={<CategoriesDashboard />} />
         <Route path="services" element={<ServicesDashboard />} />
         <Route path="clients" element={<ClientsDashboard />} />
-        <Route path="employees" element={<EmployeesDashboard/>} />
+        <Route path="employees" element={<EmployeesDashboard />} />
         <Route path="appointments" element={<div>appointments</div>} />
       </Route>
     </Route>

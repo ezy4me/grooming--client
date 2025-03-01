@@ -1,6 +1,5 @@
 import React from "react";
-import { DataGrid, GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
-import { Edit, Delete } from "@mui/icons-material";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Typography, CircularProgress, Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
@@ -13,13 +12,7 @@ const useStyles = makeStyles({
   },
 });
 
-const CategoryTable: React.FC<any> = ({
-  categories,
-  onEdit,
-  onDelete,
-  isLoading,
-  isError,
-}) => {
+const UsersTable: React.FC<any> = ({ users, isLoading, isError }) => {
   const classes = useStyles();
 
   const columns: GridColDef[] = [
@@ -30,33 +23,13 @@ const CategoryTable: React.FC<any> = ({
       align: "center",
       headerAlign: "center",
     },
-    { field: "name", headerName: "Название категории", width: 200 },
-    { field: "description", headerName: "Описание категории", width: 200 },
-    {
-      field: "actions",
-      type: "actions",
-      headerName: "Действия",
-      width: 200,
-      getActions: ({ row }) => [
-        <GridActionsCellItem
-          icon={<Edit />}
-          label="Редактировать"
-          onClick={() => onEdit(row)}
-          color="primary"
-        />,
-        <GridActionsCellItem
-          icon={<Delete />}
-          label="Удалить"
-          onClick={() => onDelete(row.id)}
-          color="error"
-        />,
-      ],
-    },
+    { field: "email", headerName: "Почта", width: 200 },
+    { field: "role", headerName: "Роль", width: 150 },
   ];
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         height: '100%',
         width: "100%",
         display: "flex",
@@ -72,7 +45,7 @@ const CategoryTable: React.FC<any> = ({
         <Typography color="error">Ошибка при загрузке данных.</Typography>
       ) : (
         <DataGrid
-          rows={categories}
+          rows={users}
           columns={columns}
           initialState={{
             pagination: {
@@ -90,8 +63,8 @@ const CategoryTable: React.FC<any> = ({
           }
         />
       )}
-    </div>
+    </Box>
   );
 };
 
-export default CategoryTable;
+export default UsersTable;
