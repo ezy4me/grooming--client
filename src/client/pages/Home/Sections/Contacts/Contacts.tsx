@@ -7,11 +7,11 @@ const Contacts: React.FC = () => {
     <section id="contacts" className={styles.contacts}>
       <div className={styles.container}>
         <h2 className={styles.heading}>Контакты</h2>
+        <div className={styles.divider}></div>
         <p className={styles.text}>
           Свяжитесь с нами для записи и вопросов:
         </p>
 
-        {/* Контактная информация */}
         <div className={styles.contactInfo}>
           <div className={styles.contactItem}>
             <FaPhoneAlt className={styles.icon} />

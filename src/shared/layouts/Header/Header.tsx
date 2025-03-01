@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import styles from "./Header.module.css";
 import LoginModal from "../../components/Login/LoginModal";
 
@@ -26,22 +25,23 @@ const Header: React.FC = () => {
           <p>мягкие лапки</p>
         </div>
         <nav className={styles.nav}>
-          <Link to="/" className={styles.navItem}>
+          <a href="#home" className={styles.navItem}>
             Главная
-          </Link>
-          <Link to="/services" className={styles.navItem}>
+          </a>
+          <a href="#services" className={styles.navItem}>
             Услуги
-          </Link>
-          <Link to="/gallery" className={styles.navItem}>
+          </a>
+          <a href="#gallery" className={styles.navItem}>
             Галерея
-          </Link>
-          <Link to="/about" className={styles.navItem}>
+          </a>
+          <a href="#about" className={styles.navItem}>
             О нас
-          </Link>
-          <Link to="/contacts" className={styles.navItem}>
+          </a>
+          <a href="#contacts" className={styles.navItem}>
             Контакты
-          </Link>
+          </a>
         </nav>
+
         <button className={styles.button} onClick={openModal}>
           Войти
         </button>

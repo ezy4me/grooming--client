@@ -12,6 +12,12 @@ const useStyles = makeStyles({
   },
 });
 
+const formatDate = (dateString: string) => {
+  if (!dateString) return "-";
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("ru-RU").format(date);
+};
+
 const ClientsTable: React.FC<any> = ({ clients, isLoading, isError }) => {
   const classes = useStyles();
 
@@ -35,7 +41,7 @@ const ClientsTable: React.FC<any> = ({ clients, isLoading, isError }) => {
       field: "createdAt",
       headerName: "Дата создания",
       width: 150,
-      valueGetter: (_, row) => row.user?.createdAt || "-",
+      valueGetter: (_, row) => formatDate(row.user?.createdAt),
     },
   ];
 

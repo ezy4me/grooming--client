@@ -50,7 +50,7 @@ export const clientService = api.injectEndpoints({
         method: "DELETE",
       }),
     }),
-    createClient: builder.mutation<Client, Omit<Client, "id">>({
+    createClient: builder.mutation<any, any>({
       query: (data) => ({
         url: `client`,
         method: "POST",

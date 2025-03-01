@@ -1,14 +1,18 @@
 import React from "react";
 import styles from "./About.module.css";
-import { FaHandshake, FaPaw, FaAward } from "react-icons/fa"; // Пример иконок для секции
+import { FaHandshake, FaPaw, FaAward } from "react-icons/fa";
 
 const About: React.FC = () => {
   return (
     <section id="about" className={styles.about}>
       <div className={styles.container}>
         <h2 className={styles.heading}>О нас</h2>
+
+        <div className={styles.divider}></div>
         <p className={styles.subtitle}>
-          Мы — команда профессионалов, заботящихся о каждом питомце, как о своем собственном. Многолетний опыт и страсть к животным позволяют нам обеспечивать высочайший уровень обслуживания.
+          Мы — команда профессионалов, заботящихся о каждом питомце, как о своем
+          собственном. Многолетний опыт и страсть к животным позволяют нам
+          обеспечивать высочайший уровень обслуживания.
         </p>
 
         <div className={styles.info}>
@@ -16,7 +20,8 @@ const About: React.FC = () => {
             <FaHandshake className={styles.icon} />
             <h3 className={styles.infoTitle}>Надежность и доверие</h3>
             <p className={styles.infoText}>
-              Мы ценим доверие наших клиентов и всегда гарантируем качественное обслуживание.
+              Мы ценим доверие наших клиентов и всегда гарантируем качественное
+              обслуживание.
             </p>
           </div>
 
@@ -24,7 +29,8 @@ const About: React.FC = () => {
             <FaPaw className={styles.icon} />
             <h3 className={styles.infoTitle}>Любовь к животным</h3>
             <p className={styles.infoText}>
-              Наши специалисты любят животных, а их забота и внимание делают работу по-настоящему комфортной.
+              Наши специалисты любят животных, а их забота и внимание делают
+              работу по-настоящему комфортной.
             </p>
           </div>
 
@@ -32,7 +38,8 @@ const About: React.FC = () => {
             <FaAward className={styles.icon} />
             <h3 className={styles.infoTitle}>Профессионализм</h3>
             <p className={styles.infoText}>
-              Высокий уровень квалификации мастеров подтверждается многолетним опытом работы и успешными результатами.
+              Высокий уровень квалификации мастеров подтверждается многолетним
+              опытом работы и успешными результатами.
             </p>
           </div>
         </div>

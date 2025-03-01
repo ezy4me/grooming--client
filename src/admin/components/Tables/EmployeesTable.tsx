@@ -13,6 +13,12 @@ const useStyles = makeStyles({
   },
 });
 
+const formatDate = (dateString: string) => {
+  if (!dateString) return "-";
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("ru-RU").format(date); 
+};
+
 const EmployeesTable: React.FC<any> = ({
   employees,
   onEdit,
@@ -32,7 +38,12 @@ const EmployeesTable: React.FC<any> = ({
     },
     { field: "fullName", headerName: "Имя", width: 200 },
     { field: "phone", headerName: "Телефон", width: 150 },
-    { field: "birthday", headerName: "День рождения", width: 150 },
+    {
+      field: "birthday",
+      headerName: "День рождения",
+      width: 150,
+      valueGetter: (_, row) => formatDate(row.birthday), 
+    },
     {
       field: "user",
       headerName: "Почта",

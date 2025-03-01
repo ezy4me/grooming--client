@@ -21,7 +21,8 @@ const Footer = () => {
             <p>мягкие лапки</p>
           </div>
           <p>
-            <FaMapMarkerAlt className={styles.icon} /> ул. Пушистая, 12, Москва
+            <FaMapMarkerAlt className={styles.icon} /> Адрес: просп. Ибрагимова,
+            20, Казань
           </p>
           <p>
             <FaPhone className={styles.icon} /> +7 (988) 182-80-85

@@ -1,36 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import React, { useState, useEffect } from "react";
 import styles from "./Profile.module.css";
+
 import {
   useGetClientByUserIdQuery,
+  useCreateClientMutation,
   useUpdateClientMutation,
 } from "../../../services/clientService";
-
-interface FormData {
-  name: string;
-  phone: string;
-}
-
-// Мемоизированный компонент InputField
-const InputField = React.memo(({ field, disabled }: any) => {
-  return <input {...field} disabled={disabled} />;
-});
+import ProfileEditForm from "./Sections/ProfileEditForm";
 
 const ProfilePage: React.FC = () => {
   const [editMode, setEditMode] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [localClient, setLocalClient] = useState<{
+    name: string;
+    phone: string;
+  }>({
+    name: "",
+    phone: "",
+  });
 
-  let user = null;
-  try {
-    const storedUser = localStorage.getItem("user");
-    user = storedUser ? JSON.parse(storedUser) : null;
-  } catch (error) {
-    console.error("Ошибка при разборе user из localStorage", error);
-  }
-
-  const userId = user && typeof user === "object" && user.id ? user.id : null;
-  console.log("USER:", user);
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const userId = user?.id;
 
   const {
     data: client,
@@ -40,92 +30,98 @@ const ProfilePage: React.FC = () => {
     skip: !userId,
   });
 
-  const schema = yup.object().shape({
-    name: yup.string().required("Имя обязательно").min(2, "Минимум 2 символа"),
-    phone: yup.string().required("Телефон обязателен"),
-  });
-
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: yupResolver(schema),
-  });
+  const [createClient] = useCreateClientMutation();
+  const [updateClient] = useUpdateClientMutation();
 
   useEffect(() => {
     if (client) {
-      setValue("name", client.name);
-      setValue("phone", client.phone);
+      setLocalClient({ name: client.name, phone: client.phone });
     }
-  }, [client, setValue]);
+  }, [client]);
 
-  const [updateClient] = useUpdateClientMutation();
+  const handleFormSubmit = async (data: { name: string; phone: string }) => {
+    if (!userId) {
+      setErrorMessage("Ошибка: пользователь не найден.");
+      return;
+    }
 
-  const onSubmit = async (data: FormData) => {
-    if (!client) return;
+    setErrorMessage(null);
+
     try {
-      await updateClient({ id: client.id, ...data }).unwrap();
+      if (client) {
+        await updateClient({ id: client.id, ...data }).unwrap();
+      } else {
+        await createClient({ userId, ...data }).unwrap();
+      }
+      setLocalClient(data); // Обновляем локальное состояние
       setEditMode(false);
-    } catch (error) {
-      console.error("Ошибка обновления данных", error);
+    } catch (error: any) {
+      console.log(error.message);
+      setErrorMessage(
+        "Ошибка при обновлении/создании данных. Попробуйте позже."
+      );
     }
   };
 
-  if (!userId) return <div>Ошибка: Пользователь не найден.</div>;
-  if (isLoading) return <div>Загрузка...</div>;
-  if (isError) return <div>Ошибка загрузки клиента.</div>;
+  if (!userId)
+    return (
+      <div className={styles.container}>
+        <div className={styles.errorMessage}>
+          Ошибка: Пользователь не найден.
+        </div>
+      </div>
+    );
+
+  if (isLoading)
+    return (
+      <div className={styles.container}>
+        <div className={styles.loadingMessage}>Загрузка...</div>
+      </div>
+    );
+
+  if (isError)
+    return (
+      <div className={styles.container}>
+        <div className={styles.errorMessage}>Ошибка загрузки клиента.</div>
+      </div>
+    );
 
   return (
     <div className={styles.profilePage}>
       <div className={styles.container}>
         <div className={styles.profileHeader}>
           <h1>Мой профиль</h1>
-          {editMode ? (
-            <button
-              type="submit"
-              form="profileForm"
-              className={styles.editButton}>
-              Сохранить
-            </button>
-          ) : (
+          {!isLoading && client && !editMode && (
             <button
               className={styles.editButton}
               onClick={() => setEditMode(true)}>
               Редактировать
             </button>
           )}
+          {editMode && (
+            <button
+              type="submit"
+              form="profileForm"
+              className={styles.editButton}>
+              Сохранить
+            </button>
+          )}
         </div>
+        <p>Почта: {user?.email}</p>
 
-        <form
-          id="profileForm"
-          onSubmit={handleSubmit(onSubmit)}
-          className={styles.profileInfo}>
-          <div className={styles.infoItem}>
-            <label>Имя:</label>
-            <Controller
-              name="name"
-              control={control}
-              render={({ field }) => <InputField {...field} disabled={!editMode} />}
-            />
-            {errors.name && (
-              <span className={styles.error}>{errors.name.message}</span>
-            )}
-          </div>
+        <hr className={styles.divider} />
 
-          <div className={styles.infoItem}>
-            <label>Телефон:</label>
-            <Controller
-              name="phone"
-              control={control}
-              render={({ field }) => <InputField {...field} disabled={!editMode} />}
-            />
-            {errors.phone && (
-              <span className={styles.error}>{errors.phone.message}</span>
-            )}
+        <ProfileEditForm
+          initialData={localClient}
+          onSubmit={handleFormSubmit}
+          editMode={editMode}
+        />
+
+        {errorMessage && (
+          <div className={styles.errorMessage}>
+            <p>{errorMessage}</p>
           </div>
-        </form>
+        )}
       </div>
     </div>
   );

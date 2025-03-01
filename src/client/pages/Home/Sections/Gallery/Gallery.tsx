@@ -20,7 +20,15 @@ const Gallery: React.FC = () => {
     <section id="gallery" className={styles.gallery}>
       <div className={styles.container}>
         <h2 className={styles.heading}>Галерея</h2>
-        <p className={styles.text}>Смотрите работы наших мастеров.</p>
+        <div className={styles.divider}></div>
+        <p className={styles.text}>
+          Ознакомьтесь с нашими работами! Мы гордимся каждым проектом и
+          стремимся к совершенству. Наша команда профессионалов создает
+          уникальные решения для каждого клиента.
+        </p>
+        <p className={styles.text}>
+          Вдохновитесь нашими работами и доверьте нам воплощение ваших идей!
+        </p>
 
         <div className={styles.galleryWrapper}>
           <div className={styles.imageTrack}>
@@ -32,8 +40,14 @@ const Gallery: React.FC = () => {
                   ? styles.layout1
                   : styles.layout2;
               return (
-                <div key={index} className={`${styles.imageItem} ${layoutClass}`}>
-                  <img src={src} alt={`Работа ${index + 1}`} className={styles.image} />
+                <div
+                  key={index}
+                  className={`${styles.imageItem} ${layoutClass}`}>
+                  <img
+                    src={src}
+                    alt={`Работа ${index + 1}`}
+                    className={styles.image}
+                  />
                 </div>
               );
             })}
@@ -46,8 +60,14 @@ const Gallery: React.FC = () => {
                   ? styles.layout1
                   : styles.layout2;
               return (
-                <div key={index + images.length} className={`${styles.imageItem} ${layoutClass}`}>
-                  <img src={src} alt={`Работа ${index + 1}`} className={styles.image} />
+                <div
+                  key={index + images.length}
+                  className={`${styles.imageItem} ${layoutClass}`}>
+                  <img
+                    src={src}
+                    alt={`Работа ${index + 1}`}
+                    className={styles.image}
+                  />
                 </div>
               );
             })}

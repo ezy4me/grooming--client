@@ -12,7 +12,51 @@
   font-size: 2.5rem;
   font-weight: bold;
   color: var(--primary-color);
-  margin-bottom: 40px;
+  margin-bottom: 10px;
+}
+
+.divider {
+  width: 100px;
+  height: 4px;
+  background: var(--accent-color);
+  margin: 10px auto 30px;
+  border-radius: 2px;
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+}
+
+.loading {
+  font-size: 1.3rem;
+  color: var(--text-light-color);
+}
+
+.error {
+  font-size: 1.3rem;
+  color: red;
+  text-align: center;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.2);
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .grid {
@@ -20,6 +64,24 @@
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 25px;
   justify-content: center;
+}
+
+.skeleton {
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite linear;
+  border-radius: 20px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .card {
@@ -87,12 +149,6 @@
   opacity: 0.9;
 }
 
-.loading,
-.error {
-  font-size: 1.3rem;
-  color: var(--text-light-color);
-}
-
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -117,6 +173,21 @@
   flex-direction: column;
   position: relative;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes modal-fade-in {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal {
+  animation: modal-fade-in 0.3s ease-out;
 }
 
 .modalContent {
@@ -154,14 +225,14 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
+}
 
-  h3 {
-    margin: 8px 0;
-  }
+.serviceItem h3 {
+  margin: 8px 0;
+}
 
-  p {
-    margin: 8px 0;
-  }
+.serviceItem p {
+  margin: 8px 0;
 }
 
 .servicePrice {
