@@ -11,6 +11,7 @@ import ClientsDashboard from "../admin/pages/ClientsDashboard";
 import EmployeesDashboard from "../admin/pages/EmployeesDashboard";
 import ProfilePage from "../client/pages/Profile/ProfilePage";
 import UsersDashboard from "../admin/pages/UsersDashboard";
+import AppointmentsDashboard from "../admin/pages/AppointmentsDashboard";
 
 const RouterConfig = () => (
   <Routes>
@@ -31,7 +32,7 @@ const RouterConfig = () => (
         <Route path="services" element={<ServicesDashboard />} />
         <Route path="clients" element={<ClientsDashboard />} />
         <Route path="employees" element={<EmployeesDashboard />} />
-        <Route path="appointments" element={<div>appointments</div>} />
+        <Route path="appointments" element={<AppointmentsDashboard/>} />
       </Route>
     </Route>
 
