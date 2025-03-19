@@ -75,11 +75,12 @@ const AppointmentForm = ({
 
   useEffect(() => {
     if (appointment) {
+      console.log(appointment);
       const [date, time] = appointment.date.split("T");
       setValue("date", date);
       setValue("time", time.slice(0, 5));
       setValue("status", appointment.status);
-      setSelectedEmployee(appointment.employee.id);
+      setSelectedEmployee(appointment.employeeId);
       setSelectedClient(appointment.client.id);
 
       const serviceIds = appointment.services.map((s: any) => s.service.id);
@@ -89,7 +90,7 @@ const AppointmentForm = ({
       if (serviceIds.length > 0) {
         calculateTotalCost(serviceIds);
       } else {
-        setTotalCost(0); 
+        setTotalCost(0);
       }
     } else {
       setValue("date", "");
@@ -129,7 +130,23 @@ const AppointmentForm = ({
   };
 
   const onSubmit: SubmitHandler<any> = (data) => {
-    onSave({ ...data, serviceIds: selectedServices, clientId: selectedClient });
+    const dateTime = new Date(`${data.date}T${data.time}:00Z`).toISOString();
+
+    onSave({
+      ...data,
+      date: dateTime,
+      serviceIds: selectedServices,
+      clientId: selectedClient,
+      employeeId: selectedEmployee,
+    });
+
+    console.log("Submitted Data:", {
+      ...data,
+      date: dateTime,
+      serviceIds: selectedServices,
+      clientId: selectedClient,
+      employeeId: selectedEmployee,
+    });
   };
 
   return (
@@ -213,7 +230,7 @@ const AppointmentForm = ({
                 <Select
                   multiple
                   value={selectedServices}
-                  onChange={handleServiceChange}
+                  onChange={handleServiceChange} // Здесь вызывается функция
                   input={<OutlinedInput label="Услуги" />}
                   renderValue={(selected) =>
                     selected

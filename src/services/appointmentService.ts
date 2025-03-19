@@ -40,7 +40,7 @@ export const appointmentService = api.injectEndpoints({
 
     updateAppointment: builder.mutation<
       Appointment,
-      { id: number; formData: FormData }
+      { id: number; formData: any }
     >({
       query: ({ id, formData }) => ({
         url: `appointment/${id}`,

@@ -48,7 +48,8 @@ const AppointmentsDashboard = () => {
           severity: "success",
         });
       } else {
-        await updateAppointment({ id: selectedAppointment.id, ...data }).unwrap();
+        console.log(data)
+        await updateAppointment({ id: selectedAppointment.id, formData: {...data} }).unwrap();
         setNotification({
           open: true,
           message: "Запись обновлена",
@@ -60,7 +61,7 @@ const AppointmentsDashboard = () => {
     } catch (error: any) {
       setNotification({
         open: true,
-        message: `Ошибка при добавлении ${error.message}`,
+        message: `Ошибка при сохранении ${error.message}`,
         severity: "error",
       });
     }
