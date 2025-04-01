@@ -30,7 +30,7 @@ const UsersTable: React.FC<any> = ({ users, isLoading, isError }) => {
   return (
     <Box
       sx={{
-        height: '100%',
+        height: "100%",
         width: "100%",
         display: "flex",
         alignItems: "center",
@@ -45,6 +45,12 @@ const UsersTable: React.FC<any> = ({ users, isLoading, isError }) => {
         <Typography color="error">Ошибка при загрузке данных.</Typography>
       ) : (
         <DataGrid
+          sx={{
+            borderRadius: 4,
+            "& .MuiDataGrid-columnHeaderTitle": {
+              fontWeight: "bold",
+            },
+          }}
           rows={users}
           columns={columns}
           initialState={{
