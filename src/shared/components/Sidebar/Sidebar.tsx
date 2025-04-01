@@ -36,19 +36,22 @@ const Sidebar: React.FC<SidebarProps> = ({ links }) => {
         [`& .MuiDrawer-paper`]: {
           width: drawerWidth,
           boxSizing: "border-box",
-          backgroundColor: "#fafafa",
-          color: "#121212",
+          backgroundColor: "#282c34", 
+          color: "#ffffff", 
+          borderRight: 'none', 
         },
-      }}>
+      }}
+    >
       <Box
         display="flex"
         alignItems="center"
         justifyContent="center"
-        bgcolor={"#1ba9d8"}
+        bgcolor={"#282c34"} 
         py={2}
-        gap={1}>
-        <FaPaw size={20} color="#000000" />
-        <Typography variant="h6" fontWeight="bold">
+        gap={1}
+      >
+        <FaPaw size={24} color="#ffffff" />
+        <Typography variant="h6" color="#ffffff" fontWeight="bold" >
           мягкие лапки
         </Typography>
       </Box>
@@ -62,26 +65,34 @@ const Sidebar: React.FC<SidebarProps> = ({ links }) => {
             sx={{
               paddingY: 1.5,
               backgroundColor:
-                location.pathname === path ? "#d1e7ff" : "transparent",
+                location.pathname === path ? "#ffffff" : "transparent", 
               "&:hover": {
-                backgroundColor:
-                  location.pathname === path ? "#a6c8ff" : "#f4f4f4",
+                backgroundColor: location.pathname === path ? "#ff3881" : "#333", 
               },
-            }}>
-            <ListItemIcon>{icon}</ListItemIcon>
-            <ListItemText primary={text} />
+            }}
+          >
+            <ListItemIcon sx={{ color: location.pathname === path ? "#000000" : "#ffffff" }}>
+              {icon}
+            </ListItemIcon>
+            <ListItemText
+              primary={text}
+              sx={{
+                fontWeight: location.pathname === path ? "bold" : "normal", 
+                color: location.pathname === path ? "#000000" : "#ffffff", 
+              }}
+            />
           </ListItemButton>
         ))}
       </List>
 
-      <Divider />
+      <Divider sx={{ borderColor: "#444", my: 2 }} />
 
       <List>
         <ListItemButton onClick={handleLogout} sx={{ paddingY: 1.5 }}>
-          <ListItemIcon>
+          <ListItemIcon sx={{ color: "#ffffff", fontWeight: "bold" }}>
             <FaSignOutAlt color="error" />
           </ListItemIcon>
-          <ListItemText primary="Выход" />
+          <ListItemText primary="Выход" sx={{ color: "#ffffff", fontWeight: "bold" }} />
         </ListItemButton>
       </List>
     </Drawer>

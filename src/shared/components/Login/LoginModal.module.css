@@ -125,8 +125,6 @@ input:focus {
   margin: 5px 0 0 0;
 }
 
-/* Адаптивность */
-
 @media (max-width: 1024px) {
   .modal {
     width: 90%;
