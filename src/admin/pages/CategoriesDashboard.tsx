@@ -121,10 +121,10 @@ const CategoriesDashboard = () => {
           px: 2,
           borderRadius: 2,
         }}>
-        <Typography variant="h4">Категории товаров</Typography>
+        <Typography variant="h4">Категории услуг</Typography>
         <Button
           variant="contained"
-          sx={{bgcolor: "#24dc13"}}
+          sx={{bgcolor: "#24dc13", borderRadius: 4}}
           startIcon={<Add />}
           onClick={() => handleOpenCategoryForm(null)}>
           Добавить категорию

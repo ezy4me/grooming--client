@@ -44,27 +44,48 @@ const ServiceTable: React.FC<any> = ({
       type: "actions",
       headerName: "Действия",
       width: 200,
-      getActions: ({ row }) => [
-        <GridActionsCellItem
-          icon={<Edit />}
-          label="Редактировать"
-          onClick={() => onEdit(row)}
-          color="primary"
-        />,
-        <GridActionsCellItem
-          icon={<Delete />}
-          label="Удалить"
-          onClick={() => onDelete(row.id)}
-          color="error"
-        />,
-      ],
+      getActions: ({ row }) => {
+        const isEven = Number(row.indexRelativeToCurrentPage) % 2 === 1;
+        const rowColor = isEven ? "#f5f5f5" : "#ffffff";
+
+        return [
+          <GridActionsCellItem
+            icon={
+              <Edit
+                sx={{
+                  padding: 1,
+                  borderRadius: "50%",
+                  backgroundColor: rowColor,
+                  color: "#0d0d0d",
+                }}
+              />
+            }
+            label="Редактировать"
+            onClick={() => onEdit(row)}
+          />,
+          <GridActionsCellItem
+            icon={
+              <Delete
+                sx={{
+                  padding: 1,
+                  borderRadius: "50%",
+                  backgroundColor: rowColor,
+                  color: "#ff1515",
+                }}
+              />
+            }
+            label="Удалить"
+            onClick={() => onDelete(row.id)}
+          />,
+        ];
+      },
     },
   ];
 
   return (
     <Box
       sx={{
-        height: '100%',
+        height: "100%",
         width: "100%",
         display: "flex",
         alignItems: "center",
@@ -72,13 +93,22 @@ const ServiceTable: React.FC<any> = ({
       }}>
       {isLoading ? (
         <Box display="flex" flexDirection="column" alignItems="center">
-          <CircularProgress />
+          <CircularProgress sx={{ color: "#ff3881" }} />
           <Typography sx={{ mt: 1 }}>Загрузка...</Typography>
         </Box>
       ) : isError ? (
         <Typography color="error">Ошибка при загрузке данных.</Typography>
       ) : (
         <DataGrid
+          sx={{
+            borderRadius: 4,
+            "& .MuiDataGrid-columnHeaderTitle": {
+              fontWeight: "bold",
+            },
+            "& .MuiDataGrid-cell:hover": {
+              color: "#ff3881",
+            },
+          }}
           rows={services}
           columns={columns}
           initialState={{

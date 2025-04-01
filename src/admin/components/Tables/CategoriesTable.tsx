@@ -37,27 +37,48 @@ const CategoryTable: React.FC<any> = ({
       type: "actions",
       headerName: "Действия",
       width: 200,
-      getActions: ({ row }) => [
-        <GridActionsCellItem
-          icon={<Edit />}
-          label="Редактировать"
-          onClick={() => onEdit(row)}
-          color="primary"
-        />,
-        <GridActionsCellItem
-          icon={<Delete />}
-          label="Удалить"
-          onClick={() => onDelete(row.id)}
-          color="error"
-        />,
-      ],
+      getActions: ({ row }) => {
+        const isEven = Number(row.indexRelativeToCurrentPage) % 2 === 0;
+        const rowColor = isEven ? "#f5f5f5" : "#ffffff";
+
+        return [
+          <GridActionsCellItem
+            icon={
+              <Edit
+                sx={{
+                  padding: 1,
+                  borderRadius: "50%",
+                  backgroundColor: rowColor,
+                  color: "#0d0d0d",
+                }}
+              />
+            }
+            label="Редактировать"
+            onClick={() => onEdit(row)}
+          />,
+          <GridActionsCellItem
+            icon={
+              <Delete
+                sx={{
+                  padding: 1,
+                  borderRadius: "50%",
+                  backgroundColor: rowColor,
+                  color: "#ff1515",
+                }}
+              />
+            }
+            label="Удалить"
+            onClick={() => onDelete(row.id)}
+          />,
+        ];
+      },
     },
   ];
 
   return (
-    <div
-      style={{
-        height: '100%',
+    <Box
+      sx={{
+        height: "100%",
         width: "100%",
         display: "flex",
         alignItems: "center",
@@ -65,13 +86,22 @@ const CategoryTable: React.FC<any> = ({
       }}>
       {isLoading ? (
         <Box display="flex" flexDirection="column" alignItems="center">
-          <CircularProgress />
+          <CircularProgress sx={{ color: "#ff3881" }} />
           <Typography sx={{ mt: 1 }}>Загрузка...</Typography>
         </Box>
       ) : isError ? (
         <Typography color="error">Ошибка при загрузке данных.</Typography>
       ) : (
         <DataGrid
+          sx={{
+            borderRadius: 4,
+            "& .MuiDataGrid-columnHeaderTitle": {
+              fontWeight: "bold",
+            },
+            "& .MuiDataGrid-cell:hover": {
+              color: "#ff3881",
+            },
+          }}
           rows={categories}
           columns={columns}
           initialState={{
@@ -90,7 +120,7 @@ const CategoryTable: React.FC<any> = ({
           }
         />
       )}
-    </div>
+    </Box>
   );
 };
 

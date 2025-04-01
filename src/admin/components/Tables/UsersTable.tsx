@@ -38,7 +38,7 @@ const UsersTable: React.FC<any> = ({ users, isLoading, isError }) => {
       }}>
       {isLoading ? (
         <Box display="flex" flexDirection="column" alignItems="center">
-          <CircularProgress />
+          <CircularProgress sx={{ color: "#ff3881"}} />
           <Typography sx={{ mt: 1 }}>Загрузка...</Typography>
         </Box>
       ) : isError ? (
@@ -49,6 +49,9 @@ const UsersTable: React.FC<any> = ({ users, isLoading, isError }) => {
             borderRadius: 4,
             "& .MuiDataGrid-columnHeaderTitle": {
               fontWeight: "bold",
+            },
+            "& .MuiDataGrid-cell:hover": {
+              color: "#ff3881",
             },
           }}
           rows={users}

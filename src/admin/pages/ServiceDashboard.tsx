@@ -144,7 +144,7 @@ const ServicesDashboard = () => {
           />
           <Button
             variant="contained"
-            sx={{bgcolor: "#24dc13"}}
+            sx={{bgcolor: "#24dc13", borderRadius: 4}}
             startIcon={<Add />}
             onClick={() => handleOpenServiceForm(null)}>
             Добавить услугу

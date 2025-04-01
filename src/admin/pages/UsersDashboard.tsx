@@ -69,7 +69,7 @@ const UsersDashboard = () => {
           <Button
             variant="contained"
             color="primary"
-            sx={{bgcolor: "#24dc13"}}
+            sx={{bgcolor: "#24dc13", borderRadius: 4}}
             onClick={handleOpenUserForm}>
             Добавить пользователя
           </Button>

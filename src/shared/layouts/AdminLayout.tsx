@@ -16,7 +16,7 @@ const AdminLayout: React.FC = () => {
     },
     { text: "Услуги", path: "/admin/services", icon: <FaHome /> },
     { text: "Клиенты", path: "/admin/clients", icon: <FaUsers /> },
-    { text: "Работники", path: "/admin/employees", icon: <FaUserTie /> },
+    { text: "Сотрудники", path: "/admin/employees", icon: <FaUserTie /> },
     { text: "Записи", path: "/admin/appointments", icon: <FaClipboardList /> },
   ];
 

@@ -120,11 +120,11 @@ const AppointmentsDashboard = () => {
             size="small"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            sx={{ flexGrow: 1, maxWidth: 300 }}
+            sx={{ flexGrow: 1, maxWidth: 300, borderRadius: 4 }}
           />
           <Button
             variant="contained"
-            sx={{ bgcolor: "#24dc13" }}
+            sx={{ bgcolor: "#24dc13", borderRadius: 4 }}
             startIcon={<Add />}
             onClick={() => {
               setOpenForm(true);
