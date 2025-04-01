@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./Gallery.module.css";
 
 const images = [
@@ -15,6 +15,27 @@ const images = [
 ];
 
 const Gallery: React.FC = () => {
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (trackRef.current) {
+      const track = trackRef.current;
+      let scrollAmount = 0;
+
+      const scroll = () => {
+        scrollAmount += 1;
+        if (scrollAmount >= track.scrollWidth / 2) {
+          scrollAmount = 0;
+        }
+        track.style.transform = `translateX(-${scrollAmount}px)`;
+      };
+
+      const interval = setInterval(scroll, 15);
+
+      return () => clearInterval(interval);
+    }
+  }, []);
+
   return (
     <section id="gallery" className={styles.gallery}>
       <div className={styles.container}>
@@ -30,8 +51,8 @@ const Gallery: React.FC = () => {
         </p>
 
         <div className={styles.galleryWrapper}>
-          <div className={styles.imageTrack}>
-            {images.map((src, index) => {
+          <div className={styles.imageTrack} ref={trackRef}>
+            {[...images, ...images].map((src, index) => {
               const layoutClass =
                 index % 3 === 0
                   ? styles.layout0
@@ -44,27 +65,7 @@ const Gallery: React.FC = () => {
                   className={`${styles.imageItem} ${layoutClass}`}>
                   <img
                     src={src}
-                    alt={`Работа ${index + 1}`}
-                    className={styles.image}
-                  />
-                </div>
-              );
-            })}
-
-            {images.map((src, index) => {
-              const layoutClass =
-                index % 3 === 0
-                  ? styles.layout0
-                  : index % 3 === 1
-                  ? styles.layout1
-                  : styles.layout2;
-              return (
-                <div
-                  key={index + images.length}
-                  className={`${styles.imageItem} ${layoutClass}`}>
-                  <img
-                    src={src}
-                    alt={`Работа ${index + 1}`}
+                    alt={`Работа ${index % images.length + 1}`}
                     className={styles.image}
                   />
                 </div>

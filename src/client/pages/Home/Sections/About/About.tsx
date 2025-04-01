@@ -43,6 +43,10 @@ const About: React.FC = () => {
             </p>
           </div>
         </div>
+
+        <div className={styles.imageContainer}>
+          <img src="/Group_3.svg" alt="award" className={styles.svgImage} />
+        </div>
       </div>
     </section>
   );

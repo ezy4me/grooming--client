@@ -8,6 +8,7 @@ const Spinner = () => <div className={styles.spinner}></div>;
 const Services: React.FC = () => {
   const { data: categories, isLoading, error } = useGetCategoriesQuery();
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const { data: services, isLoading: isServicesLoading } =
     useGetServicesByCategoryQuery(selectedCategoryId!, {
@@ -22,11 +23,23 @@ const Services: React.FC = () => {
     setSelectedCategoryId(null);
   };
 
+  const filteredCategories = categories?.filter((category) =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <section id="services" className={styles.services}>
       <div className={styles.container}>
         <h2 className={styles.heading}>Наши Услуги</h2>
         <div className={styles.divider}></div>
+
+        <input
+          type="text"
+          className={styles.search}
+          placeholder="Поиск категории..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
 
         {isLoading || error ? (
           <div className={styles.loadingContainer}>
@@ -38,7 +51,7 @@ const Services: React.FC = () => {
           </div>
         ) : (
           <div className={styles.grid}>
-            {categories?.map((category) => (
+            {filteredCategories?.map((category) => (
               <div
                 key={category.id}
                 className={styles.card}

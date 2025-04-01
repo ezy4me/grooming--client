@@ -12,14 +12,15 @@
 }
 
 .modal {
-  background-color: #fff;
+  background-color: var(--background-color);
   padding: 30px;
-  border-radius: 10px;
+  border-radius: 15px;
   width: 400px;
   max-width: 90%;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
   text-align: center;
   position: relative;
+  z-index: 1001;
 }
 
 .closeButton {
@@ -27,23 +28,23 @@
   top: 10px;
   right: 10px;
   font-size: 24px;
-  color: #333;
+  color: var(--primary-color);
   background: transparent;
   border: none;
   cursor: pointer;
 }
 
 .modalTitle {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--primary-color);
   margin-bottom: 20px;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
 }
 
 .formGroup {
@@ -54,7 +55,7 @@
 
 label {
   font-size: 1rem;
-  color: #666;
+  color: var(--text-color);
   margin-bottom: 5px;
 }
 
@@ -68,42 +69,44 @@ label {
 .inputIcon {
   position: absolute;
   left: 10px;
-  color: #d81b60;
+  color: var(--accent-color);
   font-size: 1.2rem;
 }
 
 input {
-  padding: 10px 10px 10px 35px; 
+  padding: 12px 10px 12px 35px; 
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 5px;
   outline: none;
   width: 100%;
+  background: var(--background-color);
+  transition: border-color 0.3s ease;
 }
 
 input:focus {
-  border-color: #d81b60;
+  border-color: var(--accent-color);
 }
 
 .submitButton {
-  background-color: #d81b60;
-  color: #fff;
+  background-color: var(--accent-color);
+  color: var(--button-text-color);
   padding: 12px 20px;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 .submitButton:hover {
-  background-color: #ff80ab;
+  background-color: var(--accent-light);
 }
 
 .toggleText {
-  margin-top: 15px;
-  font-size: 0.9rem;
-  color: #666;
+  margin-top: 20px;
+  font-size: 1rem;
+  color: var(--text-color);
 
   span {
     margin-left: 8px;
@@ -111,13 +114,55 @@ input:focus {
 }
 
 .toggleLink {
-  color: #d81b60;
+  color: var(--accent-color);
   cursor: pointer;
   font-weight: bold;
 }
 
 .error {
   font-size: .75rem;
-  color: #d81b60;
-  margin: 4px 0 0 0;
+  color: var(--accent-color);
+  margin: 5px 0 0 0;
+}
+
+/* Адаптивность */
+
+@media (max-width: 1024px) {
+  .modal {
+    width: 90%;
+    padding: 25px;
+  }
+  
+  .modalTitle {
+    font-size: 1.75rem;
+  }
+
+  .formGroup {
+    gap: 12px;
+  }
+
+  .submitButton {
+    padding: 10px 18px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .modal {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .modalTitle {
+    font-size: 1.5rem;
+  }
+
+  .formGroup {
+    gap: 10px;
+  }
+
+  .submitButton {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
 }

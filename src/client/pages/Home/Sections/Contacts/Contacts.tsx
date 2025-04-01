@@ -40,6 +40,7 @@ const Contacts: React.FC = () => {
             width="100%"
             height="400"
             frameBorder="0"
+            z-index="100"
             className={styles.map}
             title="Яндекс Карта"></iframe>
         </div>
