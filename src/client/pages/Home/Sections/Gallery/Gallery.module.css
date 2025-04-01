@@ -48,7 +48,7 @@
   grid-template-columns: repeat(10, 1fr);
   grid-auto-flow: column;
   gap: 10px;
-  animation: scrollGallery 20s linear infinite;
+  animation: scrollGallery 15s linear infinite;
   align-items: center;
 }
 

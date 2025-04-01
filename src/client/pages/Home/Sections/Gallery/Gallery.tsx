@@ -12,7 +12,6 @@ const images = [
   "/work_8.webp",
   "/work_9.webp",
   "/work_10.webp",
-  "/work_11.webp",
 ];
 
 const Gallery: React.FC = () => {

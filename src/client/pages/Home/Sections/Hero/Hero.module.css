@@ -1,6 +1,7 @@
 .hero {
   padding: 60px 20px;
-  background-color: var(--secondary-color);
+  background: var(--background-color);
+
 }
 
 .container {

@@ -1,5 +1,5 @@
 .header {
-  background-color: var(--secondary-color);
+  background-color: var(--background-color);
   color: var(--primary-color);
   padding: 20px 0;
 }

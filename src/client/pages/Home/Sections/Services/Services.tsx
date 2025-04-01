@@ -7,9 +7,7 @@ const Spinner = () => <div className={styles.spinner}></div>;
 
 const Services: React.FC = () => {
   const { data: categories, isLoading, error } = useGetCategoriesQuery();
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
-    null
-  );
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
 
   const { data: services, isLoading: isServicesLoading } =
     useGetServicesByCategoryQuery(selectedCategoryId!, {
@@ -44,7 +42,8 @@ const Services: React.FC = () => {
               <div
                 key={category.id}
                 className={styles.card}
-                onClick={() => handleOpenModal(category.id)}>
+                onClick={() => handleOpenModal(category.id)}
+              >
                 <div className={styles.icon}>{category.name[0]}</div>
                 <h3 className={styles.cardTitle}>{category.name}</h3>
                 <p className={styles.cardText}>{category.description}</p>

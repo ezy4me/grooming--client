@@ -39,6 +39,12 @@ const AppointmentsTable: React.FC<any> = ({
       headerAlign: "center",
     },
     {
+      field: "client",
+      headerName: "Клиент",
+      width: 200,
+      valueGetter: (_, row) => row.client?.name || "-",
+    },
+    {
       field: "date",
       headerName: "Дата",
       width: 200,
