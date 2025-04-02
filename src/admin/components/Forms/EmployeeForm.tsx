@@ -1,8 +1,10 @@
 import { useEffect } from "react";
-import { Typography, Modal, Box, Grid, Button, TextField } from "@mui/material";
+import { Typography, Modal, Box, Grid, Button, TextField, MenuItem, Select, InputLabel, FormControl, CircularProgress } from "@mui/material";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { modalStyle } from "../../../shared/modalStyle";
+import { useGetUsersQuery } from "../../../services/userService"; 
 
 interface EmployeeFormProps {
   open: boolean;
@@ -10,13 +12,13 @@ interface EmployeeFormProps {
   onSave: (employeeData: {
     fullName: string;
     phone: string;
-    birthday: string; 
+    birthday: string;
     userId: number;
   }) => void;
   employee?: {
     fullName: string;
     phone: string;
-    birthday: string; 
+    birthday: string;
     userId: number;
   };
   isAdding: boolean;
@@ -46,6 +48,8 @@ const EmployeeForm = ({
     defaultValues: { fullName: "", phone: "", birthday: undefined, userId: 0 },
   });
 
+  const { data: users, isLoading, isError } = useGetUsersQuery();
+
   useEffect(() => {
     if (employee) {
       setValue("fullName", employee.fullName);
@@ -63,14 +67,14 @@ const EmployeeForm = ({
   const onSubmit: SubmitHandler<{
     fullName: string;
     phone: string;
-    birthday: any; 
+    birthday: any;
     userId: number;
   }> = (data) => {
     const formattedData = {
       ...data,
-      birthday: new Date(data.birthday).toISOString(), 
+      birthday: new Date(data.birthday).toISOString(),
     };
-    onSave(formattedData); 
+    onSave(formattedData);
   };
 
   return (
@@ -133,13 +137,32 @@ const EmployeeForm = ({
                 name="userId"
                 control={control}
                 render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="ID пользователя"
-                    fullWidth
-                    error={!!errors.userId}
-                    helperText={errors.userId?.message}
-                  />
+                  <FormControl fullWidth error={!!errors.userId}>
+                    <InputLabel id="user-select-label">Пользователь</InputLabel>
+                    <Select
+                      {...field}
+                      labelId="user-select-label"
+                      label="Пользователь"
+                      displayEmpty
+                      MenuProps={{
+                        PaperProps: {
+                          style: {
+                            maxHeight: 200, 
+                            overflowY: 'auto',
+                          },
+                        },
+                      }}
+                    >
+                      {isLoading && <MenuItem disabled><CircularProgress size={24} /></MenuItem>}
+                      {isError && <MenuItem disabled>Ошибка загрузки пользователей</MenuItem>}
+                      {users?.map((user) => (
+                        <MenuItem key={user.id} value={user.id}>
+                          {user.email}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <p>{errors.userId?.message}</p>
+                  </FormControl>
                 )}
               />
             </Grid>
@@ -150,9 +173,12 @@ const EmployeeForm = ({
               display: "flex",
               justifyContent: "flex-end",
               gap: 1,
-            }}>
-            <Button onClick={onClose}>Отмена</Button>
-            <Button variant="contained" type="submit">
+            }}
+          >
+            <Button sx={{ borderRadius: 4 }} onClick={onClose}>
+              Отмена
+            </Button>
+            <Button sx={{ borderRadius: 4 }} variant="contained" type="submit">
               {isAdding ? "Добавить" : "Сохранить"}
             </Button>
           </Box>
@@ -160,17 +186,6 @@ const EmployeeForm = ({
       </Box>
     </Modal>
   );
-};
-
-const modalStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
 };
 
 export default EmployeeForm;

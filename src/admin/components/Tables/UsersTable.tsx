@@ -12,6 +12,17 @@ const useStyles = makeStyles({
   },
 });
 
+const formatRole = (role: string) => {
+  if (!role) return "-";
+  const formatedRole =
+    role == "EMPLOYEE"
+      ? "Сотрудник"
+      : role == "USER"
+      ? "Пользователь"
+      : "Администратор";
+  return formatedRole;
+};
+
 const UsersTable: React.FC<any> = ({ users, isLoading, isError }) => {
   const classes = useStyles();
 
@@ -24,7 +35,12 @@ const UsersTable: React.FC<any> = ({ users, isLoading, isError }) => {
       headerAlign: "center",
     },
     { field: "email", headerName: "Почта", width: 200 },
-    { field: "role", headerName: "Роль", width: 150 },
+    {
+      field: "role",
+      headerName: "Роль",
+      width: 150,
+      valueGetter: (_, row) => formatRole(row.role),
+    },
   ];
 
   return (
@@ -38,7 +54,7 @@ const UsersTable: React.FC<any> = ({ users, isLoading, isError }) => {
       }}>
       {isLoading ? (
         <Box display="flex" flexDirection="column" alignItems="center">
-          <CircularProgress sx={{ color: "#ff3881"}} />
+          <CircularProgress sx={{ color: "#ff3881" }} />
           <Typography sx={{ mt: 1 }}>Загрузка...</Typography>
         </Box>
       ) : isError ? (

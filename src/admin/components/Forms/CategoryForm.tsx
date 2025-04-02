@@ -3,6 +3,7 @@ import { Typography, Modal, Box, Grid, Button, TextField } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { modalStyle } from "../../../shared/modalStyle";
 
 interface CategoryFormProps {
   open: boolean;
@@ -100,8 +101,10 @@ const CategoryForm = ({
 
           <Box
             sx={{ mt: 2, display: "flex", justifyContent: "flex-end", gap: 1 }}>
-            <Button onClick={onClose}>Отмена</Button>
-            <Button variant="contained" type="submit">
+            <Button sx={{ borderRadius: 4 }} onClick={onClose}>
+              Отмена
+            </Button>
+            <Button sx={{ borderRadius: 4 }} variant="contained" type="submit">
               {isAdding ? "Добавить" : "Сохранить"}
             </Button>
           </Box>
@@ -109,17 +112,6 @@ const CategoryForm = ({
       </Box>
     </Modal>
   );
-};
-
-const modalStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
 };
 
 export default CategoryForm;

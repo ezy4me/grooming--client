@@ -22,6 +22,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useGetServicesQuery } from "../../../services/serviceService";
 import { useGetEmployeesQuery } from "../../../services/employeeService";
 import { useGetClientsQuery } from "../../../services/clientService";
+import { modalStyle } from "../../../shared/modalStyle";
 
 interface AppointmentFormProps {
   open: boolean;
@@ -163,6 +164,14 @@ const AppointmentForm = ({
                 getOptionLabel={(option) => option.name}
                 value={clients.find((c) => c.id === selectedClient) || null}
                 onChange={handleClientChange}
+                MenuProps={{
+                  PaperProps: {
+                    style: {
+                      maxHeight: 200, 
+                      overflowY: 'auto',
+                    },
+                  },
+                }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -214,6 +223,15 @@ const AppointmentForm = ({
                 <Select
                   value={selectedEmployee}
                   onChange={handleEmployeeChange}
+                  displayEmpty
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        maxHeight: 200, 
+                        overflowY: 'auto',
+                      },
+                    },
+                  }}
                   label="Сотрудник">
                   {employees.map((employee) => (
                     <MenuItem key={employee.id} value={employee.id}>
@@ -230,7 +248,16 @@ const AppointmentForm = ({
                 <Select
                   multiple
                   value={selectedServices}
-                  onChange={handleServiceChange} // Здесь вызывается функция
+                  onChange={handleServiceChange} 
+                  displayEmpty
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        maxHeight: 200, 
+                        overflowY: 'auto',
+                      },
+                    },
+                  }}
                   input={<OutlinedInput label="Услуги" />}
                   renderValue={(selected) =>
                     selected
@@ -259,8 +286,8 @@ const AppointmentForm = ({
           </Grid>
           <Box
             sx={{ mt: 2, display: "flex", justifyContent: "flex-end", gap: 1 }}>
-            <Button onClick={onClose}>Отмена</Button>
-            <Button variant="contained" type="submit">
+            <Button sx={{borderRadius: 4}} onClick={onClose}>Отмена</Button>
+            <Button sx={{borderRadius: 4}} variant="contained" type="submit">
               {isAdding ? "Добавить" : "Сохранить"}
             </Button>
           </Box>
@@ -270,15 +297,5 @@ const AppointmentForm = ({
   );
 };
 
-const modalStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-};
 
 export default AppointmentForm;
