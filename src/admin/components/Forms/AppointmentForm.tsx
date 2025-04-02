@@ -7,15 +7,8 @@ import {
   Button,
   TextField,
   MenuItem,
-  Checkbox,
-  ListItemText,
-  FormControl,
-  InputLabel,
-  Select,
-  OutlinedInput,
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import { SelectChangeEvent } from "@mui/material";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -40,6 +33,15 @@ const validationSchema = Yup.object({
   clientId: Yup.number().required("ID клиента обязателен"),
   serviceIds: Yup.array().min(1, "Выберите хотя бы одну услугу"),
 });
+
+const generateTimeSlots = () => {
+  const times = [];
+  for (let hour = 9; hour < 21; hour++) {
+    times.push(`${hour.toString().padStart(2, "0")}:00`);
+    times.push(`${hour.toString().padStart(2, "0")}:30`);
+  }
+  return times;
+};
 
 const AppointmentForm = ({
   open,
@@ -70,13 +72,12 @@ const AppointmentForm = ({
   const { data: clients = [] } = useGetClientsQuery();
 
   const [selectedServices, setSelectedServices] = useState<number[]>([]);
-  const [selectedEmployee, setSelectedEmployee] = useState<number>(0);
+  const [selectedEmployee, setSelectedEmployee] = useState<number | null>(null);
   const [selectedClient, setSelectedClient] = useState<number | null>(null);
   const [totalCost, setTotalCost] = useState<number>(0);
 
   useEffect(() => {
     if (appointment) {
-      console.log(appointment);
       const [date, time] = appointment.date.split("T");
       setValue("date", date);
       setValue("time", time.slice(0, 5));
@@ -88,16 +89,12 @@ const AppointmentForm = ({
       setValue("serviceIds", serviceIds);
       setSelectedServices(serviceIds);
 
-      if (serviceIds.length > 0) {
-        calculateTotalCost(serviceIds);
-      } else {
-        setTotalCost(0);
-      }
+      calculateTotalCost(serviceIds);
     } else {
       setValue("date", "");
       setValue("time", "");
       setValue("status", "pending");
-      setSelectedEmployee(0);
+      setSelectedEmployee(null);
       setSelectedClient(null);
       setValue("serviceIds", []);
       setSelectedServices([]);
@@ -105,16 +102,16 @@ const AppointmentForm = ({
     }
   }, [appointment, setValue]);
 
-  const handleServiceChange = (event: SelectChangeEvent<number[]>) => {
-    const selected = event.target.value as number[];
-    setSelectedServices(selected);
-    setValue("serviceIds", selected);
-    calculateTotalCost(selected);
-  };
+  // const handleServiceChange = (event: SelectChangeEvent<number[]>) => {
+  //   const selected = event.target.value as number[];
+  //   setSelectedServices(selected);
+  //   setValue("serviceIds", selected);
+  //   calculateTotalCost(selected);
+  // };
 
-  const handleEmployeeChange = (event: SelectChangeEvent<number>) => {
-    setSelectedEmployee(Number(event.target.value));
-    setValue("employeeId", Number(event.target.value));
+  const handleEmployeeChange = (event: any, newValue: any) => {
+    setSelectedEmployee(newValue ? newValue.id : null);
+    setValue("employeeId", newValue ? newValue.id : 0);
   };
 
   const handleClientChange = (event: any, newValue: any) => {
@@ -140,14 +137,6 @@ const AppointmentForm = ({
       clientId: selectedClient,
       employeeId: selectedEmployee,
     });
-
-    console.log("Submitted Data:", {
-      ...data,
-      date: dateTime,
-      serviceIds: selectedServices,
-      clientId: selectedClient,
-      employeeId: selectedEmployee,
-    });
   };
 
   return (
@@ -164,22 +153,8 @@ const AppointmentForm = ({
                 getOptionLabel={(option) => option.name}
                 value={clients.find((c) => c.id === selectedClient) || null}
                 onChange={handleClientChange}
-                MenuProps={{
-                  PaperProps: {
-                    style: {
-                      maxHeight: 200, 
-                      overflowY: 'auto',
-                    },
-                  },
-                }}
                 renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Клиент"
-                    fullWidth
-                    error={!!errors.clientId}
-                    helperText={errors.clientId?.message}
-                  />
+                  <TextField {...params} label="Клиент" fullWidth error={!!errors.clientId} helperText={errors.clientId?.message} />
                 )}
               />
             </Grid>
@@ -188,15 +163,7 @@ const AppointmentForm = ({
                 name="date"
                 control={control}
                 render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Дата"
-                    fullWidth
-                    type="date"
-                    InputLabelProps={{ shrink: true }}
-                    error={!!errors.date}
-                    helperText={errors.date?.message}
-                  />
+                  <TextField {...field} label="Дата" fullWidth type="date" InputLabelProps={{ shrink: true }} error={!!errors.date} helperText={errors.date?.message} />
                 )}
               />
             </Grid>
@@ -205,89 +172,51 @@ const AppointmentForm = ({
                 name="time"
                 control={control}
                 render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Время"
-                    fullWidth
-                    type="time"
-                    InputLabelProps={{ shrink: true }}
-                    error={!!errors.time}
-                    helperText={errors.time?.message}
-                  />
+                  <TextField {...field} label="Время" fullWidth select>
+                    {generateTimeSlots().map((time) => (
+                      <MenuItem key={time} value={time}>
+                        {time}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 )}
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControl fullWidth error={!!errors.employeeId}>
-                <InputLabel>Сотрудник</InputLabel>
-                <Select
-                  value={selectedEmployee}
-                  onChange={handleEmployeeChange}
-                  displayEmpty
-                  MenuProps={{
-                    PaperProps: {
-                      style: {
-                        maxHeight: 200, 
-                        overflowY: 'auto',
-                      },
-                    },
-                  }}
-                  label="Сотрудник">
-                  {employees.map((employee) => (
-                    <MenuItem key={employee.id} value={employee.id}>
-                      {employee.fullName}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {errors.employeeId && <span>{errors.employeeId.message}</span>}
-              </FormControl>
+              <Autocomplete
+                options={employees}
+                getOptionLabel={(option) => option.fullName}
+                value={employees.find((e) => e.id === selectedEmployee) || null}
+                onChange={handleEmployeeChange}
+                renderInput={(params) => (
+                  <TextField {...params} label="Сотрудник" fullWidth error={!!errors.employeeId} helperText={errors.employeeId?.message} />
+                )}
+              />
             </Grid>
             <Grid item xs={12}>
-              <FormControl fullWidth error={!!errors.serviceIds}>
-                <InputLabel>Услуги</InputLabel>
-                <Select
-                  multiple
-                  value={selectedServices}
-                  onChange={handleServiceChange} 
-                  displayEmpty
-                  MenuProps={{
-                    PaperProps: {
-                      style: {
-                        maxHeight: 200, 
-                        overflowY: 'auto',
-                      },
-                    },
-                  }}
-                  input={<OutlinedInput label="Услуги" />}
-                  renderValue={(selected) =>
-                    selected
-                      .map((id) => services.find((s) => s.id === id)?.name)
-                      .join(", ")
-                  }>
-                  {services.map((service) => (
-                    <MenuItem key={service.id} value={service.id}>
-                      <Checkbox
-                        checked={selectedServices.indexOf(service.id) > -1}
-                      />
-                      <ListItemText
-                        primary={`${service.name} (${service.price}₽)`}
-                      />
-                    </MenuItem>
-                  ))}
-                </Select>
-                {errors.serviceIds && <span>{errors.serviceIds.message}</span>}
-              </FormControl>
+              <Autocomplete
+                multiple
+                options={services}
+                getOptionLabel={(option) => `${option.name} (${option.price}₽)`}
+                value={services.filter((s) => selectedServices.includes(s.id))}
+                onChange={(_, newValue) => {
+                  const ids = newValue.map((s) => s.id);
+                  setSelectedServices(ids);
+                  setValue("serviceIds", ids);
+                  calculateTotalCost(ids);
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Услуги" fullWidth error={!!errors.serviceIds} helperText={errors.serviceIds?.message} />
+                )}
+              />
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h6">
-                Итоговая стоимость: {totalCost}₽
-              </Typography>
+              <Typography variant="h6">Итоговая стоимость: {totalCost}₽</Typography>
             </Grid>
           </Grid>
-          <Box
-            sx={{ mt: 2, display: "flex", justifyContent: "flex-end", gap: 1 }}>
-            <Button sx={{borderRadius: 4}} onClick={onClose}>Отмена</Button>
-            <Button sx={{borderRadius: 4}} variant="contained" type="submit">
+          <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end", gap: 1 }}>
+            <Button onClick={onClose}>Отмена</Button>
+            <Button variant="contained" type="submit">
               {isAdding ? "Добавить" : "Сохранить"}
             </Button>
           </Box>
@@ -296,6 +225,5 @@ const AppointmentForm = ({
     </Modal>
   );
 };
-
 
 export default AppointmentForm;

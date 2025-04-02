@@ -3,6 +3,7 @@ import { DataGrid, GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
 import { Edit, Delete } from "@mui/icons-material";
 import { Typography, CircularProgress, Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import ImageCell from "../../../shared/components/ImageCell/ImageCell";
 
 const useStyles = makeStyles({
   "even-row": {
@@ -35,6 +36,23 @@ const EmployeesTable: React.FC<any> = ({
       width: 90,
       align: "center",
       headerAlign: "center",
+    },
+    {
+      field: "image",
+      headerName: "Фото",
+      width: 150,
+      renderCell: (params) => {
+        const employeeId = params.row.id;
+        const imageUrl = `http://localhost:3000/employee/${employeeId}/image`;
+        return (
+          <ImageCell
+            imageUrl={imageUrl}
+            defaultImage="/paws_1.png"
+            altText="Employee Image"
+            size={50}
+          />
+        );
+      },
     },
     { field: "fullName", headerName: "Имя", width: 200 },
     { field: "phone", headerName: "Телефон", width: 150 },

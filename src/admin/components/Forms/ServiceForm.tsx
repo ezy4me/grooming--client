@@ -122,7 +122,7 @@ const ServiceForm = ({
                     label="Описание"
                     fullWidth
                     multiline
-                    rows={3}
+                    rows={1}
                     error={!!errors.description}
                     helperText={errors.description?.message}
                   />

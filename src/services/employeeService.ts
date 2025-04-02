@@ -6,7 +6,7 @@ interface Employee {
   phone: string;
   imageId?: number | null;
   birthday: string;
-  userId: number;
+  userId: string;
 }
 
 export const employeeService = api.injectEndpoints({
@@ -17,11 +17,11 @@ export const employeeService = api.injectEndpoints({
     getEmployeeById: builder.query<Employee, number>({
       query: (id) => `employee/${id}`,
     }),
-    updateEmployee: builder.mutation<
-      Employee,
-      Partial<Employee> & { id: number }
-    >({
-      query: ({ id, ...data }) => ({
+    getEmployeeImage: builder.query<string, number>({
+      query: (id) => `employee/${id}/image`,
+    }),
+    updateEmployee: builder.mutation<Employee, { id: number; data: FormData }>({
+      query: ({ id, data }) => ({
         url: `employee/${id}`,
         method: "PUT",
         body: data,
@@ -33,7 +33,7 @@ export const employeeService = api.injectEndpoints({
         method: "DELETE",
       }),
     }),
-    createEmployee: builder.mutation<Employee, Omit<Employee, "id">>({
+    createEmployee: builder.mutation<Employee, FormData>({
       query: (data) => ({
         url: `employee`,
         method: "POST",
@@ -46,6 +46,7 @@ export const employeeService = api.injectEndpoints({
 export const {
   useGetEmployeesQuery,
   useGetEmployeeByIdQuery,
+  useGetEmployeeImageQuery,
   useUpdateEmployeeMutation,
   useDeleteEmployeeMutation,
   useCreateEmployeeMutation,

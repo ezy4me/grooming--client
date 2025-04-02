@@ -6,6 +6,7 @@ import {
   Button,
   Typography,
   Box,
+  Divider,
 } from "@mui/material";
 
 interface ConfirmDialogProps {
@@ -28,22 +29,34 @@ const ConfirmDialog = ({
   cancelText = "Отмена",
 }: ConfirmDialogProps) => {
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle sx={{ fontWeight: "bold", fontSize: "1.25rem" }}>
+    <Dialog
+      sx={{ borderRadius: 4 }}
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm">
+      <DialogTitle
+        sx={{
+          fontWeight: "bold",
+          fontSize: "1.25rem",
+          textTransform: "uppercase",
+        }}>
         {title}
       </DialogTitle>
+      <Divider />
       <DialogContent>
         <Box sx={{ py: 1 }}>
-          <Typography variant="body1">{message}</Typography>
+          <Typography variant="h6">{message}</Typography>
         </Box>
       </DialogContent>
-      <DialogActions sx={{ pb: 2, px: 3 }}>
-        <Button onClick={onClose} variant="contained">
+      <Divider />
+      <DialogActions sx={{ py: 2, px: 3 }}>
+        <Button onClick={onClose} variant="contained" sx={{ borderRadius: 4 }}>
           {cancelText}
         </Button>
         <Button
           onClick={onConfirm}
-          sx={{ bgcolor: "#ff642f" }}
+          sx={{ bgcolor: "#ff2f2f", borderRadius: 4 }}
           variant="contained"
           autoFocus>
           {confirmText}

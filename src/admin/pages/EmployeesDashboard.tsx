@@ -48,12 +48,7 @@ const EmployeesDashboard = () => {
     setOpenEmployeeForm(false);
   };
 
-  const handleSaveEmployee = async (employeeData: {
-    fullName: string;
-    phone: string;
-    birthday: string;
-    userId: number;
-  }) => {
+  const handleSaveEmployee = async (employeeData: any) => {
     try {
       if (isAddingEmployee) {
         await createEmployee(employeeData).unwrap();
@@ -63,9 +58,11 @@ const EmployeesDashboard = () => {
           severity: "success",
         });
       } else if (selectedEmployee) {
+        console.log(employeeData);
+
         await updateEmployee({
           id: selectedEmployee.id,
-          ...employeeData,
+          data: employeeData,
         }).unwrap();
         setNotification({
           open: true,
@@ -76,7 +73,7 @@ const EmployeesDashboard = () => {
       handleCloseEmployeeForm();
       refetch();
     } catch (error: any) {
-      console.log(error.message);
+      console.log(error);
       setNotification({
         open: true,
         message: "Ошибка сохранения",
@@ -143,7 +140,7 @@ const EmployeesDashboard = () => {
 
           <Button
             variant="contained"
-            sx={{bgcolor: "#24dc13", borderRadius: 4}}
+            sx={{ bgcolor: "#24dc13", borderRadius: 4 }}
             startIcon={<Add />}
             onClick={() => handleOpenEmployeeForm(null)}>
             Добавить
