@@ -28,18 +28,36 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({ clientId }) => {
         {appointments.map((appointment: any) => (
           <li key={appointment.id} className={styles.appointmentItem}>
             <p>
-              <strong>Дата:</strong> {appointment.date}
+              <strong>Дата:</strong>{" "}
+              {new Date(appointment.date).toLocaleString()}
             </p>
             <p>
               <strong>Статус:</strong> {appointment.status}
             </p>
             <p>
-              <strong>Сотрудник:</strong> {appointment.employee.name}
+              <strong>Сотрудник:</strong> {appointment.employee.fullName}{" "}
+              (Телефон: {appointment.employee.phone}, Дата рождения:{" "}
+              {new Date(appointment.employee.birthday).toLocaleDateString()})
+            </p>
+            <p>
+              <strong>Клиент:</strong> {appointment.client.name} (Телефон:{" "}
+              {appointment.client.phone})
             </p>
             <p>
               <strong>Услуги:</strong>{" "}
-              {appointment.services.map((s: any) => s.name).join(", ")}
+              {appointment.services
+                .map(
+                  (service: any) =>
+                    `${service.service.name} (Цена: ${service.service.price} руб.)`
+                )
+                .join(", ")}
             </p>
+            {appointment.image && (
+              <p>
+                <strong>Изображение:</strong>{" "}
+                <img src={appointment.image.url} alt="Image" />
+              </p>
+            )}
           </li>
         ))}
       </ul>

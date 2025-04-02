@@ -69,6 +69,7 @@ const ProfilePage: React.FC = () => {
     navigate("/");
   };
 
+  // Проверки состояния
   if (!userId)
     return (
       <div className={styles.errorMessage}>Ошибка: Пользователь не найден.</div>

@@ -26,7 +26,7 @@ export const appointmentService = api.injectEndpoints({
     getImageByAppointmentId: builder.query<Blob, number>({
       query: (id) => ({
         url: `appointment/${id}/image`,
-        responseHandler: (response) => response.blob(),
+        responseHandler: (response: any) => response.blob(),
       }),
     }),
 

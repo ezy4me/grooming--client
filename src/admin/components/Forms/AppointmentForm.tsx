@@ -7,6 +7,7 @@ import {
   Button,
   TextField,
   MenuItem,
+  Select,
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
@@ -154,7 +155,13 @@ const AppointmentForm = ({
                 value={clients.find((c) => c.id === selectedClient) || null}
                 onChange={handleClientChange}
                 renderInput={(params) => (
-                  <TextField {...params} label="Клиент" fullWidth error={!!errors.clientId} helperText={errors.clientId?.message} />
+                  <TextField
+                    {...params}
+                    label="Клиент"
+                    fullWidth
+                    error={!!errors.clientId}
+                    helperText={errors.clientId?.message}
+                  />
                 )}
               />
             </Grid>
@@ -163,7 +170,15 @@ const AppointmentForm = ({
                 name="date"
                 control={control}
                 render={({ field }) => (
-                  <TextField {...field} label="Дата" fullWidth type="date" InputLabelProps={{ shrink: true }} error={!!errors.date} helperText={errors.date?.message} />
+                  <TextField
+                    {...field}
+                    label="Дата"
+                    fullWidth
+                    type="date"
+                    InputLabelProps={{ shrink: true }}
+                    error={!!errors.date}
+                    helperText={errors.date?.message}
+                  />
                 )}
               />
             </Grid>
@@ -172,13 +187,21 @@ const AppointmentForm = ({
                 name="time"
                 control={control}
                 render={({ field }) => (
-                  <TextField {...field} label="Время" fullWidth select>
+                  <Select
+                    {...field}
+                    label="Время"
+                    fullWidth
+                    MenuProps={{
+                      PaperProps: {
+                        style: { maxHeight: 250, overflowY: "auto" },
+                      },
+                    }}>
                     {generateTimeSlots().map((time) => (
                       <MenuItem key={time} value={time}>
                         {time}
                       </MenuItem>
                     ))}
-                  </TextField>
+                  </Select>
                 )}
               />
             </Grid>
@@ -189,7 +212,13 @@ const AppointmentForm = ({
                 value={employees.find((e) => e.id === selectedEmployee) || null}
                 onChange={handleEmployeeChange}
                 renderInput={(params) => (
-                  <TextField {...params} label="Сотрудник" fullWidth error={!!errors.employeeId} helperText={errors.employeeId?.message} />
+                  <TextField
+                    {...params}
+                    label="Сотрудник"
+                    fullWidth
+                    error={!!errors.employeeId}
+                    helperText={errors.employeeId?.message}
+                  />
                 )}
               />
             </Grid>
@@ -206,15 +235,24 @@ const AppointmentForm = ({
                   calculateTotalCost(ids);
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Услуги" fullWidth error={!!errors.serviceIds} helperText={errors.serviceIds?.message} />
+                  <TextField
+                    {...params}
+                    label="Услуги"
+                    fullWidth
+                    error={!!errors.serviceIds}
+                    helperText={errors.serviceIds?.message}
+                  />
                 )}
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h6">Итоговая стоимость: {totalCost}₽</Typography>
+              <Typography variant="h6">
+                Итоговая стоимость: {totalCost}₽
+              </Typography>
             </Grid>
           </Grid>
-          <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end", gap: 1 }}>
+          <Box
+            sx={{ mt: 2, display: "flex", justifyContent: "flex-end", gap: 1 }}>
             <Button onClick={onClose}>Отмена</Button>
             <Button variant="contained" type="submit">
               {isAdding ? "Добавить" : "Сохранить"}

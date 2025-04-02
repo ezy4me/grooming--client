@@ -1,21 +1,25 @@
 .profilePage {
   padding: 40px 20px;
-  background-color: #f4f4f9;
+  background-color: var(--background-color);
+
+  p {
+    font-size: 1.5rem;
+  }
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  background-color: white;
+  background-color: var(--secondary-color);
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 18px var(--shadow-color);
 }
 
 .divider {
   border: none;
   height: 1px;
-  background-color: #ddd;
+  background-color: var(--border-color);
   margin: 20px 0;
 }
 
@@ -28,6 +32,7 @@
   border-radius: 8px;
   height: 100%;
   min-height: 400px;
+  background-color: rgba(255, 255, 255, 0.7);
 }
 
 .profileHeader {
@@ -40,12 +45,12 @@
 .profileHeader h1 {
   font-size: 2rem;
   font-weight: bold;
-  color: #333;
+  color: var(--primary-color);
 }
 
 .editButton {
-  background-color: #007bff;
-  color: white;
+  background-color: var(--accent-color);
+  color: var(--secondary-color);
   border: none;
   padding: 10px 20px;
   border-radius: 6px;
@@ -54,7 +59,7 @@
 }
 
 .editButton:hover {
-  background-color: #0056b3;
+  background-color: var(--accent-light);
 }
 
 .profileInfo {
@@ -72,23 +77,24 @@
   font-size: 1.1rem;
   font-weight: bold;
   margin-bottom: 10px;
-  color: #555;
+  color: var(--text-color);
 }
 
 .infoItem input,
 .infoItem textarea {
   font-size: 1.1rem;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   background-color: #fafafa;
   outline: none;
   transition: border 0.3s ease;
+  width: auto;
 }
 
 .infoItem input:focus,
 .infoItem textarea:focus {
-  border-color: #007bff;
+  border-color: var(--accent-color);
 }
 
 textarea {
@@ -102,8 +108,8 @@ textarea {
 }
 
 .submitButton {
-  background-color: #28a745;
-  color: white;
+  background-color: var(--button-color);
+  color: var(--button-text-color);
   border: none;
   padding: 10px 20px;
   border-radius: 6px;
@@ -112,7 +118,7 @@ textarea {
 }
 
 .submitButton:hover {
-  background-color: #218838;
+  background-color: var(--button-text-color);
 }
 
 .buttons {
@@ -121,8 +127,8 @@ textarea {
 }
 
 .logoutButton {
-  background-color: #dc3545;
-  color: white;
+  background-color: var(--button-color);
+  color: var(--button-text-color);
   border: none;
   padding: 10px 20px;
   border-radius: 6px;
@@ -131,5 +137,5 @@ textarea {
 }
 
 .logoutButton:hover {
-  background-color: #b52a37;
+  opacity: .8;
 }
