@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Profile.module.css";
-
+import { useGetAppointmentsByClientIdQuery } from "../../../services/appointmentService";
 import {
-  useGetClientByUserIdQuery,
   useCreateClientMutation,
+  useGetClientByUserIdQuery,
   useUpdateClientMutation,
 } from "../../../services/clientService";
 import ProfileEditForm from "./Sections/ProfileEditForm";
 import AppointmentsList from "./Sections/Appointment/AppointmentsList";
+import AppointmentForm from "./Sections/Appointment/AppointmentForm";
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
@@ -22,6 +23,8 @@ const ProfilePage: React.FC = () => {
     phone: "",
   });
 
+  const [openAppointmentForm, setOpenAppointmentForm] = useState(false);
+
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const userId = user?.id;
 
@@ -30,6 +33,11 @@ const ProfilePage: React.FC = () => {
     isLoading,
     isError,
   } = useGetClientByUserIdQuery(userId as number, { skip: !userId });
+
+  const { data: appointments, refetch: refetchAppointments } =
+    useGetAppointmentsByClientIdQuery(client?.id as number, {
+      skip: !client?.id,
+    });
 
   const [createClient] = useCreateClientMutation();
   const [updateClient] = useUpdateClientMutation();
@@ -69,7 +77,11 @@ const ProfilePage: React.FC = () => {
     navigate("/");
   };
 
-  // Проверки состояния
+  const handleAppointmentFormSave = () => {
+    // После сохранения записи перезапускаем запрос
+    refetchAppointments();
+  };
+
   if (!userId)
     return (
       <div className={styles.errorMessage}>Ошибка: Пользователь не найден.</div>
@@ -85,6 +97,11 @@ const ProfilePage: React.FC = () => {
         <div className={styles.profileHeader}>
           <h1>Мой профиль</h1>
           <div className={styles.buttons}>
+            <button
+              className={styles.editButton}
+              onClick={() => setOpenAppointmentForm(true)}>
+              Запись на прием
+            </button>
             {!isLoading && client && !editMode && (
               <button
                 className={styles.editButton}
@@ -112,13 +129,27 @@ const ProfilePage: React.FC = () => {
           onSubmit={handleFormSubmit}
           editMode={editMode}
         />
-        {client && <AppointmentsList clientId={client.id} />}
+        {client && <AppointmentsList appointments={appointments} />}
         {errorMessage && (
           <div className={styles.errorMessage}>
             <p>{errorMessage}</p>
           </div>
         )}
       </div>
+
+      {openAppointmentForm && client && (
+        <AppointmentForm
+          clientId={client?.id}
+          open={openAppointmentForm}
+          onClose={() => setOpenAppointmentForm(false)}
+          onSave={(appointmentData) => {
+            console.log(appointmentData);
+            setOpenAppointmentForm(false);
+            handleAppointmentFormSave();
+          }}
+          isAdding={true}
+        />
+      )}
     </div>
   );
 };

@@ -6,7 +6,7 @@ interface Appointment {
   status: string;
   employee: { id: number; fullName: string };
   services: { id: number; name: string }[];
-  client: { id: number; name: string; pgone: string };
+  client: { id: number; name: string; phone: string };
 }
 
 export const appointmentService = api.injectEndpoints({
@@ -55,6 +55,17 @@ export const appointmentService = api.injectEndpoints({
         method: "DELETE",
       }),
     }),
+
+    getAvailableSlots: builder.query<
+      string[],
+      { date: string; employeeId: number }
+    >({
+      query: ({ date, employeeId }) => ({
+        url: `appointment/available-slots`,
+        method: "POST",
+        body: { date, employeeId },
+      }),
+    }),
   }),
 });
 
@@ -66,4 +77,5 @@ export const {
   useCreateAppointmentMutation,
   useUpdateAppointmentMutation,
   useDeleteAppointmentMutation,
+  useGetAvailableSlotsQuery,
 } = appointmentService;

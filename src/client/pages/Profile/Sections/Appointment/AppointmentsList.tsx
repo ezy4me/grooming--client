@@ -1,23 +1,12 @@
 import React from "react";
 import styles from "./AppointmentsList.module.css";
-import { useGetAppointmentsByClientIdQuery } from "../../../../../services/appointmentService";
 
 interface AppointmentsListProps {
-  clientId: number;
+  appointments: any; 
 }
 
-const AppointmentsList: React.FC<AppointmentsListProps> = ({ clientId }) => {
-  const {
-    data: appointments,
-    isLoading,
-    isError,
-  } = useGetAppointmentsByClientIdQuery(clientId, { skip: !clientId });
-
-  if (isLoading) {
-    return <p className={styles.loading}>Загрузка записей...</p>;
-  }
-
-  if (isError || !appointments || appointments.length === 0) {
+const AppointmentsList: React.FC<AppointmentsListProps> = ({ appointments }) => {
+  if (!appointments || appointments.length === 0) {
     return <p className={styles.error}>Записей не найдено.</p>;
   }
 
@@ -29,7 +18,7 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({ clientId }) => {
           <li key={appointment.id} className={styles.appointmentItem}>
             <p>
               <strong>Дата:</strong>{" "}
-              {new Date(appointment.date).toLocaleString()}
+              {new Date(appointment.date).toLocaleString('ru-RU', { timeZone: 'UTC' })}
             </p>
             <p>
               <strong>Статус:</strong> {appointment.status}

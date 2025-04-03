@@ -38,6 +38,11 @@
   backdrop-filter: blur(10px);
 }
 
+.modalTitle {
+  font-size: 1.25rem;
+  text-align: center;
+}
+
 .search:focus {
   background: rgb(255, 255, 255);
 }

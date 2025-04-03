@@ -1,7 +1,8 @@
-import React from "react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Typography, CircularProgress, Box } from "@mui/material";
+import { DataGrid, GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
+import { GetApp } from "@mui/icons-material";
+import { Typography, Box, CircularProgress } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { useGenerateClientAppointmentReportMutation } from "../../../services/clientService";
 
 const useStyles = makeStyles({
   "even-row": {
@@ -12,14 +13,26 @@ const useStyles = makeStyles({
   },
 });
 
-const formatDate = (dateString: string) => {
-  if (!dateString) return "-";
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat("ru-RU").format(date);
-};
-
 const ClientsTable: React.FC<any> = ({ clients, isLoading, isError }) => {
   const classes = useStyles();
+
+  const [generateClientAppointmentReport] = useGenerateClientAppointmentReportMutation(); 
+
+  const handleGenerateReport = async (clientId: number) => {
+    try {
+      const reportBlob: any = await generateClientAppointmentReport(
+        clientId
+      ).unwrap();
+      const url = URL.createObjectURL(reportBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `Записи Клиента_${clientId}.docx`;
+      link.click();
+      URL.revokeObjectURL(url); 
+    } catch (error) {
+      console.error("Ошибка при получении отчета:", error);
+    }
+  };
 
   const columns: GridColDef[] = [
     {
@@ -43,7 +56,27 @@ const ClientsTable: React.FC<any> = ({ clients, isLoading, isError }) => {
       width: 150,
       valueGetter: (_, row) => formatDate(row.user?.createdAt),
     },
+    {
+      field: "actions",
+      type: "actions",
+      headerName: "Отчет",
+      width: 200,
+      getActions: ({ row }) => [
+        <GridActionsCellItem
+          icon={<GetApp />}
+          label="Отчет"
+          onClick={() => handleGenerateReport(row.id)}
+          color="primary"
+        />,
+      ],
+    },
   ];
+
+  const formatDate = (dateString: string) => {
+    if (!dateString) return "-";
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("ru-RU").format(date);
+  };
 
   return (
     <Box
@@ -56,7 +89,7 @@ const ClientsTable: React.FC<any> = ({ clients, isLoading, isError }) => {
       }}>
       {isLoading ? (
         <Box display="flex" flexDirection="column" alignItems="center">
-          <CircularProgress sx={{ color: "#ff3881"}} />
+          <CircularProgress sx={{ color: "#ff3881" }} />
           <Typography sx={{ mt: 1 }}>Загрузка...</Typography>
         </Box>
       ) : isError ? (

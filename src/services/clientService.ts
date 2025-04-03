@@ -15,7 +15,7 @@ export const clientService = api.injectEndpoints({
       transformResponse: (response: any[]) =>
         response.map((client) => ({
           ...client,
-          email: client.user?.email || "", 
+          email: client.user?.email || "",
         })),
     }),
     getClientById: builder.query<Client, number>({
@@ -57,6 +57,13 @@ export const clientService = api.injectEndpoints({
         body: data,
       }),
     }),
+    generateClientAppointmentReport: builder.mutation<void, number>({
+      query: (clientId) => ({
+        url: `client/${clientId}/appointment/report`,
+        method: "GET",
+        responseHandler: (response: any) => response.blob(),
+      }),
+    }),
   }),
 });
 
@@ -67,4 +74,5 @@ export const {
   useUpdateClientMutation,
   useDeleteClientMutation,
   useCreateClientMutation,
+  useGenerateClientAppointmentReportMutation,
 } = clientService;

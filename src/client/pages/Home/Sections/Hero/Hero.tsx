@@ -1,7 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import styles from "./Hero.module.css";
-import Button from "../../../../../shared/components/Button/Button";
 import GroomingSVG from "/Group_1.svg";
 import GroomingSVG2 from "/Group_2.svg";
 
@@ -30,13 +29,7 @@ const Hero: React.FC = () => {
           Профессиональный уход за вашими питомцами. Качественно, быстро и с
           любовью.
         </motion.p>
-        <motion.div
-          className={styles.buttonContainer}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}>
-          <Button size="lg">Записаться на приём</Button>
-        </motion.div>
+       
         <img
           src={GroomingSVG}
           alt="Груминг"
