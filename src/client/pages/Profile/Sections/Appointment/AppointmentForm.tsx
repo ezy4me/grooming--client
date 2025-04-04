@@ -55,7 +55,7 @@ const AppointmentForm = ({
     defaultValues: {
       date: new Date().toISOString().split("T")[0],
       time: "",
-      status: "pending",
+      status: "Создана",
       employeeId: 0,
       serviceIds: [],
     },
@@ -85,7 +85,6 @@ const AppointmentForm = ({
 
   useEffect(() => {
     if (selectedEmployee && getValues("date")) {
-      // Перезапуск запроса при изменении даты или сотрудника
       setIsLoadingSlots(true);
       setAvailableSlots(availableSlotsData || []);
       setIsLoadingSlots(false);
@@ -110,7 +109,7 @@ const AppointmentForm = ({
     } else {
       setValue("date", new Date().toISOString().split("T")[0]);
       setValue("time", "");
-      setValue("status", "pending");
+      setValue("status", "Создана");
       setSelectedEmployee(null);
       setValue("serviceIds", []);
       setSelectedServices([]);

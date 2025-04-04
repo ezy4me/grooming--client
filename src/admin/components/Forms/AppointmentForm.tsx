@@ -54,7 +54,7 @@ const AppointmentForm = ({
     defaultValues: {
       date: "",
       time: "",
-      status: "pending",
+      status: "Создана",
       employeeId: 0,
       clientId: 0,
       serviceIds: [],
@@ -71,6 +71,8 @@ const AppointmentForm = ({
   const [totalCost, setTotalCost] = useState<number>(0);
   const [availableSlots, setAvailableSlots] = useState<string[]>([]);
   const [step, setStep] = useState(0);
+
+  const statuses = ["Создана", "Подтверждена", "Выполнена", "Отменена"];
 
   const { data: availableSlotsData } = useGetAvailableSlotsQuery(
     {
@@ -100,7 +102,7 @@ const AppointmentForm = ({
       const today = new Date().toISOString().split("T")[0];
       setValue("date", today);
       setValue("time", "");
-      setValue("status", "pending");
+      setValue("status", "Создана");
       setSelectedEmployee(null);
       setSelectedClient(null);
       setValue("clientId", 0);
@@ -271,6 +273,29 @@ const AppointmentForm = ({
             </Grid>
 
             <Grid item xs={12}>
+              <Controller
+                name="status"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    select
+                    label="Статус"
+                    fullWidth
+                    error={!!errors.status}
+                    helperText={errors.status?.message}
+                  >
+                    {statuses.map((status) => (
+                      <MenuItem key={status} value={status}>
+                        {status}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                )}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
               <Typography variant="h6">
                 Итоговая стоимость: {totalCost}₽
               </Typography>
@@ -279,8 +304,10 @@ const AppointmentForm = ({
 
           <Box
             sx={{ mt: 2, display: "flex", justifyContent: "flex-end", gap: 1 }}>
-            <Button sx={{borderRadius: 4}} onClick={onClose}>Отмена</Button>
-            <Button sx={{borderRadius: 4}} variant="contained" type="submit">
+            <Button sx={{ borderRadius: 4 }} onClick={onClose}>
+              Отмена
+            </Button>
+            <Button sx={{ borderRadius: 4 }} variant="contained" type="submit">
               {isAdding ? "Добавить" : "Сохранить"}
             </Button>
           </Box>

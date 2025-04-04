@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Typography,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-} from "@mui/material";
+import { Box, Typography, Modal, Button, Divider } from "@mui/material";
 import { format, addDays, startOfToday, parseISO, subHours } from "date-fns";
 import {
   useGetEmployeeByUserIdQuery,
   useGetEmployeeScheduleQuery,
 } from "../../services/employeeService";
+import { useUpdateAppointmentMutation } from "../../services/appointmentService";
+import { User, Scissors, Clock, CalendarCheck } from "lucide-react";
+import { modalStyle } from "../../shared/modalStyle";
 
 const EmployeeSchedule: React.FC = () => {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -21,16 +16,16 @@ const EmployeeSchedule: React.FC = () => {
   const { data: employee, isLoading } = useGetEmployeeByUserIdQuery(
     Number(userId)
   );
-
   const [employeeId, setEmployeeId] = useState<number | null>(null);
-
   const [dateRange] = useState<{ start: string; end: string }>({
     start: format(startOfToday(), "yyyy-MM-dd"),
     end: format(addDays(startOfToday(), 30), "yyyy-MM-dd"),
   });
 
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState<any>(null);
+
+  const [updateAppointment] = useUpdateAppointmentMutation();
 
   useEffect(() => {
     if (employee) {
@@ -38,7 +33,10 @@ const EmployeeSchedule: React.FC = () => {
     }
   }, [employee]);
 
-  const { data: appointments = [] } = useGetEmployeeScheduleQuery({
+  const {
+    data: appointments = [],
+    refetch: refetchAppointments,
+  } = useGetEmployeeScheduleQuery({
     employeeId: employeeId ?? 0,
     start: dateRange.start,
     end: dateRange.end,
@@ -67,19 +65,43 @@ const EmployeeSchedule: React.FC = () => {
       const appointmentDate = parseISO(appointment.date);
       const adjustedDate = subHours(appointmentDate, 3);
       const adjustedDateTime = format(adjustedDate, "yyyy-MM-dd H:mm");
-
       const cellDateTime = `${day} ${time}`;
       return adjustedDateTime === cellDateTime;
     });
   };
 
-  const handleOpenDialog = (appointment: any) => {
+  const handleOpenModal = (appointment: any) => {
     setSelectedAppointment(appointment);
-    setOpenDialog(true);
+    setOpenModal(true);
   };
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handleMarkAsCompleted = async () => {
+    if (!selectedAppointment) return;
+
+    const payload = {
+      date: selectedAppointment.date,
+      status: "Выполнена",
+      employeeId: employee!.id,
+      clientId: selectedAppointment.client.id,
+      serviceIds: selectedAppointment.services.map((s: any) => s.service.id),
+    };
+
+    try {
+      await updateAppointment({
+        id: selectedAppointment.id,
+        formData: payload,
+      }).unwrap();
+
+      await refetchAppointments();
+      setSelectedAppointment(null);
+      handleCloseModal();
+    } catch (error) {
+      console.error("Ошибка при обновлении статуса:", error);
+    }
   };
 
   if (isLoading) return <Typography>Загрузка...</Typography>;
@@ -89,26 +111,22 @@ const EmployeeSchedule: React.FC = () => {
       <Typography variant="h4" gutterBottom>
         Расписание сотрудника
       </Typography>
-
+      <Divider sx={{ marginY: 2 }} />
       <Box
         sx={{
           display: "flex",
           flexDirection: "row",
           overflowX: "auto",
-          width: "100%",
           flexWrap: "nowrap",
-          borderRadius: 4,
         }}>
         <Box
           sx={{
             width: "100px",
             display: "flex",
             flexDirection: "column",
-            borderRight: "0px solid #ccc",
-            background: "#ffffff",
             flexShrink: 0,
           }}>
-          <Box sx={{ height: "50px", borderBottom: "1px solid #ccc" }} />
+          <Box sx={{ height: "50px" }} />
           {getTimeSlots().map((slot) => (
             <Box
               key={slot}
@@ -118,8 +136,6 @@ const EmployeeSchedule: React.FC = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                fontWeight: "bold",
-                textAlign: "center",
                 backgroundColor: "#f5f5f5",
               }}>
               <Typography variant="body2">{slot}</Typography>
@@ -127,127 +143,118 @@ const EmployeeSchedule: React.FC = () => {
           ))}
         </Box>
 
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            overflowX: "auto",
-            flexWrap: "nowrap",
-            width: "100%",
-          }}>
-          {getMonthDays().map((day) => (
+        {getMonthDays().map((day) => (
+          <Box
+            key={day}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              minWidth: "100px",
+              borderLeft: "2px solid #ccc",
+              flexShrink: 0,
+            }}>
             <Box
-              key={day}
               sx={{
+                height: "50px",
                 display: "flex",
-                flexDirection: "column",
-                minWidth: "100px",
-                borderLeft: "2px solid #ccc",
-                flexShrink: 0,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#f5f5f5",
               }}>
-              <Box
-                sx={{
-                  height: "50px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  fontWeight: "bold",
-                  backgroundColor: "#f5f5f5",
-                  borderBottom: "1px solid #ccc",
-                }}>
-                <Typography variant="body2" sx={{ textAlign: "center" }}>
-                  {format(new Date(day), "dd MMM")}
-                </Typography>
-              </Box>
-
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  overflowY: "auto",
-                }}>
-                {getTimeSlots().map((timeSlot) => {
-                  const appointment = getAppointment(day, timeSlot);
-                  return (
-                    <Box
-                      key={timeSlot}
-                      sx={{
-                        height: "calc(50px)",
-                        borderBottom: "1px solid #ccc",
-                        backgroundColor: appointment ? "#d81b60" : "#fff",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        cursor: appointment ? "pointer" : "default",
-                      }}
-                      onClick={() =>
-                        appointment && handleOpenDialog(appointment)
-                      }
-                    />
-                  );
-                })}
-              </Box>
+              <Typography variant="body2">
+                {format(new Date(day), "dd MMM")}
+              </Typography>
             </Box>
-          ))}
-        </Box>
+            {getTimeSlots().map((timeSlot) => {
+              const appointment = getAppointment(day, timeSlot);
+              return (
+                <Box
+                  key={timeSlot}
+                  sx={{
+                    height: "50px",
+                    borderBottom: "1px solid #ccc",
+                    backgroundColor: appointment ? "#d81b60" : "#fff",
+                    cursor: appointment ? "pointer" : "default",
+                  }}
+                  onClick={() => appointment && handleOpenModal(appointment)}
+                />
+              );
+            })}
+          </Box>
+        ))}
       </Box>
 
-      <Dialog
-        open={openDialog}
-        onClose={handleCloseDialog}
-        maxWidth="sm"
-        sx={{
-          borderRadius: 4,
-        }}
-        fullWidth>
-        <DialogTitle
-          sx={{
-            backgroundColor: "#f5f5f5",
-            fontWeight: "bold",
-            textAlign: "center",
-          }}>
-          Информация о записи
-        </DialogTitle>
-        <DialogContent sx={{ padding: 3 }}>
+      <Modal open={openModal} onClose={handleCloseModal}>
+        <Box sx={modalStyle}>
           {selectedAppointment && (
             <Box>
               <Typography
                 variant="h6"
-                sx={{ fontWeight: "bold", color: "#333" }}>
-                Клиент:{" "}
-                <span style={{ color: "#333" }}>
-                  {selectedAppointment.client.name}
-                </span>
+                sx={{ mb: 2, textAlign: "center", fontWeight: "bold" }}>
+                Информация о записи
               </Typography>
-              <Typography variant="body1" sx={{ marginTop: 1 }}>
-                <span style={{ fontWeight: "bold" }}>Услуга:</span>{" "}
-                {selectedAppointment.services[0].service.name}
-              </Typography>
-              <Typography variant="body2" sx={{ marginTop: 1 }}>
-                <span style={{ fontWeight: "bold" }}>Время:</span>{" "}
-                {format(parseISO(selectedAppointment.date), "HH:mm")}
-              </Typography>
-              <Typography variant="body2" sx={{ marginTop: 1 }}>
-                <span style={{ fontWeight: "bold" }}>Статус:</span>{" "}
-                {selectedAppointment.status}
-              </Typography>
+
+              <Box display="flex" alignItems="center" mb={1}>
+                <User size={20} style={{ marginRight: 8 }} />
+                <Typography>
+                  Клиент: {selectedAppointment.client.name}
+                </Typography>
+              </Box>
+
+              <Box display="flex" alignItems="flex-start" mb={1}>
+                <Scissors size={20} style={{ marginRight: 8, marginTop: 4 }} />
+                <Box>
+                  <Typography>Услуги:</Typography>
+                  {selectedAppointment.services.map((serviceItem: any) => (
+                    <Typography key={serviceItem.id} sx={{ ml: 2 }}>
+                      - {serviceItem.service.name}
+                    </Typography>
+                  ))}
+                </Box>
+              </Box>
+
+              <Box display="flex" alignItems="center" mb={1}>
+                <Clock size={20} style={{ marginRight: 8 }} />
+                <Typography>
+                  Время: {format(parseISO(selectedAppointment.date), "HH:mm")}
+                </Typography>
+              </Box>
+
+              <Box display="flex" alignItems="center" mb={2}>
+                <CalendarCheck size={20} style={{ marginRight: 8 }} />
+                <Typography>Статус: {selectedAppointment.status}</Typography>
+              </Box>
+
+              <Box textAlign="center" mb={1}>
+                <Button
+                  variant="contained"
+                  onClick={handleMarkAsCompleted}
+                  sx={{
+                    backgroundColor: "#57db5b",
+                    "&:hover": { backgroundColor: "#45b64a" },
+                    color: "#fff",
+                    marginRight: 2,
+                  }}>
+                  Отметить как выполнено
+                </Button>
+              </Box>
+
+              <Box textAlign="center">
+                <Button
+                  variant="contained"
+                  onClick={handleCloseModal}
+                  sx={{
+                    backgroundColor: "#d81b60",
+                    "&:hover": { backgroundColor: "#c2185b" },
+                    color: "#fff",
+                  }}>
+                  Закрыть
+                </Button>
+              </Box>
             </Box>
           )}
-        </DialogContent>
-        <DialogActions sx={{ justifyContent: "center", padding: 2 }}>
-          <Button
-            onClick={handleCloseDialog}
-            sx={{
-              backgroundColor: "#d81b60",
-              color: "#fff",
-              "&:hover": {
-                backgroundColor: "#c2185b",
-              },
-            }}>
-            Закрыть
-          </Button>
-        </DialogActions>
-      </Dialog>
+        </Box>
+      </Modal>
     </Box>
   );
 };

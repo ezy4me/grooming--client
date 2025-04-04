@@ -20,24 +20,21 @@ ul {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  transition: background 0.3s ease;
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 15px;
+  transition: background 0.3s ease, transform 0.2s ease;
   box-shadow: 0 4px 12px var(--shadow-color);
 }
 
-.appointmentItem:hover {
-  background: var(--accent-light);
-  box-shadow: 0 8px 20px var(--shadow-color);
-}
 
 .appointmentItem p {
-  margin: 5px 0;
-  font-size: 14px;
-  color: var(--text-color);
+  margin: 10px 0;
   font-size: 1rem;
-
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 strong {
@@ -56,24 +53,60 @@ strong {
   color: #d9534f;
 }
 
-/* Дополнительные стили для улучшения внешнего вида */
-.appointmentItem .employeeDetails, 
-.appointmentItem .clientDetails,
-.appointmentItem .serviceDetails {
-  font-size: 14px;
-  color: var(--text-color);
+.statusCompleted {
+  background-color: #d4edda;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: #155724;
+  display: inline-block;
+  font-weight: 600;
 }
 
-.appointmentItem .serviceDetails span {
-  color: var(--accent-color);
-  font-weight: bold;
+.statusCancelled {
+  background-color: #f8d7da;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: #721c24;
+  display: inline-block;
+  font-weight: 600;
 }
 
-.appointmentItem .appointmentDate {
-  font-weight: bold;
-  color: var(--primary-color);
+.statusPending {
+  background-color: #fff3cd;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: #856404;
+  display: inline-block;
+  font-weight: 600;
 }
 
-.appointmentItem .appointmentStatus {
-  color: var(--accent-color);
+.imagePreview img {
+  display: block;
+  max-width: 100%;
+  max-height: 200px;
+  margin-top: 8px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.cancelButton {
+  background-color: #ff4d4f; 
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.cancelButton:hover {
+  background-color: #f5222d;
+}
+
+.cancelButton:focus {
+  outline: none;
 }
