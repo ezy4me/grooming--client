@@ -12,6 +12,7 @@ import EmployeesDashboard from "../admin/pages/EmployeesDashboard";
 import ProfilePage from "../client/pages/Profile/ProfilePage";
 import UsersDashboard from "../admin/pages/UsersDashboard";
 import AppointmentsDashboard from "../admin/pages/AppointmentsDashboard";
+import EmployeeSchedule from "../admin/pages/EmployeeSchedule";
 
 const RouterConfig = () => (
   <Routes>
@@ -38,9 +39,7 @@ const RouterConfig = () => (
 
     <Route element={<ProtectedRoute allowedRoles={["EMPLOYEE"]} />}>
       <Route path="/employee" element={<EmployeeLayout />}>
-        <Route index element={<div>Employee Dashboard</div>} />
-        <Route path="dashboard" element={<div>Employee Dashboard Page</div>} />
-        <Route path="profile" element={<div>Employee Profile Page</div>} />
+        <Route index path="appointment" element={<EmployeeSchedule/>} />
       </Route>
     </Route>
 

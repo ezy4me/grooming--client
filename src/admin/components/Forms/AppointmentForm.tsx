@@ -16,6 +16,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useGetServicesQuery } from "../../../services/serviceService";
 import { useGetEmployeesQuery } from "../../../services/employeeService";
 import { useGetClientsQuery } from "../../../services/clientService";
+import { useGetAvailableSlotsQuery } from "../../../services/appointmentService";
 import { modalStyle } from "../../../shared/modalStyle";
 
 interface AppointmentFormProps {
@@ -35,15 +36,6 @@ const validationSchema = Yup.object({
   serviceIds: Yup.array().min(1, "Выберите хотя бы одну услугу"),
 });
 
-const generateTimeSlots = () => {
-  const times = [];
-  for (let hour = 9; hour < 21; hour++) {
-    times.push(`${hour.toString().padStart(2, "0")}:00`);
-    times.push(`${hour.toString().padStart(2, "0")}:30`);
-  }
-  return times;
-};
-
 const AppointmentForm = ({
   open,
   onClose,
@@ -55,6 +47,7 @@ const AppointmentForm = ({
     control,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
@@ -76,6 +69,18 @@ const AppointmentForm = ({
   const [selectedEmployee, setSelectedEmployee] = useState<number | null>(null);
   const [selectedClient, setSelectedClient] = useState<number | null>(null);
   const [totalCost, setTotalCost] = useState<number>(0);
+  const [availableSlots, setAvailableSlots] = useState<string[]>([]);
+  const [step, setStep] = useState(0);
+
+  const { data: availableSlotsData } = useGetAvailableSlotsQuery(
+    {
+      date: getValues("date"),
+      employeeId: selectedEmployee ?? 0,
+    },
+    {
+      skip: !selectedEmployee || !getValues("date"),
+    }
+  );
 
   useEffect(() => {
     if (appointment) {
@@ -85,34 +90,46 @@ const AppointmentForm = ({
       setValue("status", appointment.status);
       setSelectedEmployee(appointment.employeeId);
       setSelectedClient(appointment.client.id);
+      setValue("clientId", appointment.client.id);
 
       const serviceIds = appointment.services.map((s: any) => s.service.id);
-      setValue("serviceIds", serviceIds);
       setSelectedServices(serviceIds);
-
+      setValue("serviceIds", serviceIds);
       calculateTotalCost(serviceIds);
     } else {
-      setValue("date", "");
+      const today = new Date().toISOString().split("T")[0];
+      setValue("date", today);
       setValue("time", "");
       setValue("status", "pending");
       setSelectedEmployee(null);
       setSelectedClient(null);
+      setValue("clientId", 0);
       setValue("serviceIds", []);
       setSelectedServices([]);
       setTotalCost(0);
     }
   }, [appointment, setValue]);
 
-  // const handleServiceChange = (event: SelectChangeEvent<number[]>) => {
-  //   const selected = event.target.value as number[];
-  //   setSelectedServices(selected);
-  //   setValue("serviceIds", selected);
-  //   calculateTotalCost(selected);
-  // };
+  useEffect(() => {
+    if (selectedEmployee && getValues("date")) {
+      setAvailableSlots(availableSlotsData || []);
+    }
+  }, [selectedEmployee, getValues("date"), availableSlotsData]);
+
+  const handleDateChange = (date: string) => {
+    setValue("date", date);
+    if (selectedEmployee && date) {
+      setAvailableSlots(availableSlotsData || []);
+      setStep(1);
+      setValue("time", "");
+    }
+  };
 
   const handleEmployeeChange = (event: any, newValue: any) => {
     setSelectedEmployee(newValue ? newValue.id : null);
     setValue("employeeId", newValue ? newValue.id : 0);
+    setStep(2);
+    setValue("time", "");
   };
 
   const handleClientChange = (event: any, newValue: any) => {
@@ -129,7 +146,7 @@ const AppointmentForm = ({
   };
 
   const onSubmit: SubmitHandler<any> = (data) => {
-    const dateTime = new Date(`${data.date}T${data.time}:00Z`).toISOString();
+    const dateTime = new Date(`${data.date}T${data.time}Z`).toISOString();
 
     onSave({
       ...data,
@@ -165,6 +182,7 @@ const AppointmentForm = ({
                 )}
               />
             </Grid>
+
             <Grid item xs={6}>
               <Controller
                 name="date"
@@ -173,15 +191,18 @@ const AppointmentForm = ({
                   <TextField
                     {...field}
                     label="Дата"
-                    fullWidth
                     type="date"
+                    fullWidth
                     InputLabelProps={{ shrink: true }}
                     error={!!errors.date}
                     helperText={errors.date?.message}
+                    onChange={(e) => handleDateChange(e.target.value)}
+                    disabled={step > 0}
                   />
                 )}
               />
             </Grid>
+
             <Grid item xs={6}>
               <Controller
                 name="time"
@@ -191,12 +212,13 @@ const AppointmentForm = ({
                     {...field}
                     label="Время"
                     fullWidth
+                    disabled={!selectedEmployee || step < 2}
                     MenuProps={{
                       PaperProps: {
                         style: { maxHeight: 250, overflowY: "auto" },
                       },
                     }}>
-                    {generateTimeSlots().map((time) => (
+                    {availableSlots.map((time) => (
                       <MenuItem key={time} value={time}>
                         {time}
                       </MenuItem>
@@ -205,6 +227,7 @@ const AppointmentForm = ({
                 )}
               />
             </Grid>
+
             <Grid item xs={12}>
               <Autocomplete
                 options={employees}
@@ -222,6 +245,7 @@ const AppointmentForm = ({
                 )}
               />
             </Grid>
+
             <Grid item xs={12}>
               <Autocomplete
                 multiple
@@ -245,16 +269,18 @@ const AppointmentForm = ({
                 )}
               />
             </Grid>
+
             <Grid item xs={12}>
               <Typography variant="h6">
                 Итоговая стоимость: {totalCost}₽
               </Typography>
             </Grid>
           </Grid>
+
           <Box
             sx={{ mt: 2, display: "flex", justifyContent: "flex-end", gap: 1 }}>
-            <Button onClick={onClose}>Отмена</Button>
-            <Button variant="contained" type="submit">
+            <Button sx={{borderRadius: 4}} onClick={onClose}>Отмена</Button>
+            <Button sx={{borderRadius: 4}} variant="contained" type="submit">
               {isAdding ? "Добавить" : "Сохранить"}
             </Button>
           </Box>

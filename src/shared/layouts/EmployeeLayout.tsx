@@ -2,20 +2,19 @@ import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { Box } from "@mui/material";
-import { FaUserCircle, FaHome } from "react-icons/fa";
+import { FaHome } from "react-icons/fa";
 
 const AdminLayout: React.FC = () => {
   const location = useLocation();
 
   const links = [
-    { text: "Dashboard", path: "/employee/dashboard", icon: <FaHome /> },
-    { text: "Profile", path: "/employee/profile", icon: <FaUserCircle /> },
+    { text: "Записи", path: "/employee/appointment", icon: <FaHome /> },
   ];
 
-  const isMainPage = location.pathname === "/employee/dashboard";
+  const isMainPage = location.pathname === "/employee/appointment";
 
   return (
-    <Box sx={{ display: "flex", height: "100vh", backgroundColor: "#282c34" }}>
+    <Box sx={{ display: "flex", height: "100vh", backgroundColor: "#282c34", overflow: 'auto' }}>
       <Sidebar links={links} />
       <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
         <Box

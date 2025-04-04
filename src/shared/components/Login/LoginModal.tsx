@@ -78,7 +78,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
         if (response.user.role === "ADMIN") {
           navigate("/admin/users");
         } else if (response.user.role === "EMPLOYEE") {
-          navigate("/employee");
+          navigate("/employee/appointment");
         } else if (response.user.role === "USER") {
           navigate("/profile");
         }

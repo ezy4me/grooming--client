@@ -17,6 +17,9 @@ export const employeeService = api.injectEndpoints({
     getEmployeeById: builder.query<Employee, number>({
       query: (id) => `employee/${id}`,
     }),
+    getEmployeeByUserId: builder.query<Employee, number>({
+      query: (id) => `employee/user/${id}`,
+    }),
     getEmployeeImage: builder.query<string, number>({
       query: (id) => `employee/${id}/image`,
     }),
@@ -40,14 +43,27 @@ export const employeeService = api.injectEndpoints({
         body: data,
       }),
     }),
+
+    getEmployeeSchedule: builder.query<
+      any[],
+      { employeeId: number; start: string; end: string }
+    >({
+      query: ({ employeeId, start, end }) => ({
+        url: `employee/${employeeId}/calendar`,
+        method: "POST",
+        body: { start, end },
+      }),
+    }),
   }),
 });
 
 export const {
   useGetEmployeesQuery,
   useGetEmployeeByIdQuery,
+  useGetEmployeeByUserIdQuery,
   useGetEmployeeImageQuery,
   useUpdateEmployeeMutation,
   useDeleteEmployeeMutation,
   useCreateEmployeeMutation,
+  useGetEmployeeScheduleQuery,
 } = employeeService;
